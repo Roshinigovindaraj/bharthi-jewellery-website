@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Bharthi Jewellers | Where Tradition Meets Elegance</title>
+    <meta name="description"
+        content="Bharthi Jewellers offers premium gold and diamond jewellery collections including rings, chains, earrings, and bridal sets. Shop luxury jewellery online.">
+
+    <meta name="keywords"
+        content="gold jewellery, diamond rings, bridal jewellery, chains, earrings, Bharthi Jewellers, luxury jewellery India">
+
+    <meta name="author" content="Bharthi Jewellers">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Firebase compat SDKs ONLY (no import/export) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#f0e1c3",
+                        "background": "#fcf9f8",
+                        "tertiary-container": "#7f735b",
+                        "primary-fixed": "#ffdea6",
+                        "on-secondary-fixed-variant": "#5c4300",
+                        "outline": "#817563",
+                        "primary-fixed-dim": "#f7bd48",
+                        "on-background": "#1c1b1b",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#271900",
+                        "outline-variant": "#d3c4af",
+                        "surface-variant": "#e5e2e1",
+                        "inverse-surface": "#313030",
+                        "surface-tint": "#7b5800",
+                        "on-tertiary-fixed-variant": "#4f4630",
+                        "on-tertiary-fixed": "#221b08",
+                        "surface-container-low": "#f6f3f2",
+                        "primary-container": "#986d00",
+                        "on-primary-container": "#fffbff",
+                        "surface-dim": "#dcd9d9",
+                        "secondary-fixed-dim": "#f6be39",
+                        "surface-container-high": "#eae7e7",
+                        "surface": "#fcf9f8",
+                        "secondary-container": "#ffc641",
+                        "tertiary-fixed-dim": "#d3c5a8",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#f7bd48",
+                        "primary": "#785600",
+                        "secondary-fixed": "#ffdfa0",
+                        "on-secondary-container": "#715300",
+                        "on-surface": "#1c1b1b",
+                        "on-surface-variant": "#4f4535",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#795900",
+                        "on-tertiary-container": "#fffbff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e5e2e1",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#261a00",
+                        "on-primary-fixed-variant": "#5d4200",
+                        "surface-container": "#f0eded",
+                        "surface-bright": "#fcf9f8",
+                        "tertiary": "#655b44",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Noto Serif"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .serif-italic {
+            font-family: 'Noto Serif', serif;
+            font-style: italic;
+        }
+
+        .gold-gradient-bg {
+            background: radial-gradient(circle at center, #fff9ee 0%, #fcf9f8 70%);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+    <!-- TopNavBar -->
+    <nav
+        class="fixed top-0 w-full z-50 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md border-b border-amber-200/20 dark:border-amber-900/30 shadow-sm shadow-amber-900/5">
+        <div class="flex justify-between items-center px-12 h-20 w-full max-w-screen-2xl mx-auto">
+            <div class="font-serif text-2xl font-bold text-amber-700 dark:text-amber-500 tracking-tighter">Bharthi
+                Jewellers</div>
+            <div class="hidden md:flex items-center space-x-10">
+                <div class="relative group">
+                    <button
+                        class="text-stone-600 dark:text-stone-400 font-medium uppercase tracking-wider hover:text-amber-600">
+                        Collections
+                    </button>
+                    <!-- Dropdown -->
+                    <div
+                        class="absolute left-0 mt-4 w-64 bg-white shadow-lg border border-amber-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+
+
+                        <button onclick="loginAndRedirect('pages/gold-diamond-rings.html')"
+                            class="block w-full text-left px-6 py-3 hover:bg-amber-50">
+                            Gold & Diamond Rings
+                        </button>
+
+                        <button onclick="loginAndRedirect('pages/chains.html')"
+                            class="block w-full text-left px-6 py-3 hover:bg-amber-50">
+                            Chains & Pendants
+                        </button>
+
+                        <button onclick="loginAndRedirect('pages/earrings-studs.html')"
+                            class="block w-full text-left px-6 py-3 hover:bg-amber-50">
+                            Earrings & Studs
+                        </button>
+
+                        <button onclick="loginAndRedirect('pages/mens-jewellery.html')"
+                            class="block w-full text-left px-6 py-3 hover:bg-amber-50">
+                            Men's Jewellery
+                        </button>
+
+
+                    </div>
+
+                </div>
+                <a class="text-stone-600 dark:text-stone-400 font-medium uppercase tracking-wider hover:text-amber-600 transition-colors duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-amber-600 after:scale-x-0 hover:after:scale-x-100 after:transition-transform"
+                    href="#">Shop</a>
+                <a class="text-stone-600 dark:text-stone-400 font-medium uppercase tracking-wider hover:text-amber-600 transition-colors duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-amber-600 after:scale-x-0 hover:after:scale-x-100 after:transition-transform"
+                    href="#">Offer</a>
+                <a class="text-stone-600 dark:text-stone-400 font-medium uppercase tracking-wider hover:text-amber-600 transition-colors duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-amber-600 after:scale-x-0 hover:after:scale-x-100 after:transition-transform"
+                    href="#">Contact</a>
+            </div>
+            <div class="flex items-center space-x-6">
+
+                <span id="username" class="text-sm font-medium text-amber-700"></span>
+
+                <button class="material-symbols-outlined text-on-surface-variant hover:text-primary">
+                    search
+                </button>
+
+                <button class="bg-primary text-on-primary px-6 py-2.5 text-xs">
+                    Visit Store
+                </button>
+
+                <button onclick="logout()" class="bg-primary text-on-primary px-6 py-2.5 text-xs">
+                    Logout
+                </button>
+
+                <button id="menu-btn" class="md:hidden text-2xl ml-2">☰</button>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="menu" class="hidden flex-col gap-4 px-6 py-6 bg-white md:hidden shadow-md fixed top-20 left-0 w-full z-40">
+
+
+        <button id="collection-btn" class="w-full text-left py-2 font-medium text-gray-800">
+            Collections
+        </button>
+
+        <div id="collection-menu" class="hidden flex-col pl-4">
+
+            <button type="button" onclick="loginAndRedirect('pages/gold-diamond-rings.html')"
+                class="block w-full text-left py-2 hover:text-amber-600">
+                Gold & Diamond Rings
+            </button>
+
+            <button type="button" onclick="loginAndRedirect('pages/chains.html')"
+                class="block w-full text-left py-2 hover:text-amber-600">
+                Chains & Pendants
+            </button>
+
+            <button type="button" onclick="loginAndRedirect('pages/earrings-studs.html')"
+                class="block w-full text-left py-2 hover:text-amber-600">
+                Earrings & Studs
+            </button>
+
+            <button type="button" onclick="loginAndRedirect('pages/mens-jewellery.html')"
+                class="block w-full text-left py-2 hover:text-amber-600">
+                Men's Jewellery
+            </button>
+
+        </div>
+
+        <hr>
+
+        <a href="#" class="block py-2">Shop</a>
+        <a href="#" class="block py-2">Offer</a>
+        <a href="#" class="block py-2">Contact</a>
+
+
+    </div>
+
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-12 gold-gradient-bg relative overflow-hidden">
+        <div class="max-w-screen-2xl mx-auto flex flex-col md:flex-row items-center gap-16">
+            <div class="w-full md:w-1/2 space-y-8">
+                <div
+                    class="inline-block border border-outline-variant/30 px-4 py-1 text-xs tracking-[0.2em] uppercase text-primary font-semibold">
+                    Est. 1985
+                </div>
+                <h1 class="text-6xl md:text-8xl font-headline leading-[1.1] text-on-surface">
+                    Where Tradition Meets <br />
+                    <span class="text-primary serif-italic">Elegance</span>
+                </h1>
+                <p class="text-on-surface-variant text-lg max-w-lg leading-relaxed font-light">
+                    Handcrafted masterworks that tell a story of heritage. Discover our exclusive collection of fine
+                    gold and diamond jewellery.
+                </p>
+                <div class="flex items-center gap-8 pt-4">
+                    <button
+                        class="bg-primary text-on-primary px-10 py-4 uppercase tracking-widest hover:shadow-xl transition-all">Explore
+                        Boutique</button>
+                    <button
+                        class="flex items-center gap-3 text-primary uppercase tracking-widest border-b border-primary/20 hover:border-primary transition-all pb-1">Our
+                        Heritage</button>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 relative">
+                <div class="aspect-[4/5] bg-surface-container-lowest p-8 shadow-2xl relative z-10">
+                    <video autoplay muted loop playsinline
+                        class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-700">
+                        <source src="assets/videos/index-video.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <!-- Decorative elements -->
+                <div class="absolute -top-10 -right-10 w-64 h-64 border border-outline-variant/20 -z-0"></div>
+                <div class="absolute -bottom-6 -left-6 w-full h-full bg-primary/5 -z-0"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collections Section -->
+    <section class="py-24 px-12 bg-surface-container-low">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="flex justify-between items-end mb-16">
+                <div class="space-y-2">
+                    <span class="uppercase tracking-[0.3em] text-primary text-sm font-semibold">The Curator's
+                        Choice</span>
+                    <h2 class="text-4xl font-headline text-on-surface">Curated Collections</h2>
+                </div>
+                <a class="text-on-surface-variant hover:text-primary transition-colors border-b border-outline-variant pb-1 uppercase tracking-widest text-xs"
+                    href="#">View All Gallery</a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Rings -->
+                <div
+                    class="group cursor-pointer bg-surface-container-lowest p-6 border border-transparent hover:border-primary/30 transition-all duration-500">
+                    <div class="aspect-square overflow-hidden mb-6" onmousemove="zoom(event, this)"
+                        onmouseleave="reset(this)">
+                        <img class="w-full h-full object-cover transition-transform duration-300"
+                            src="https://i.pinimg.com/1200x/7b/6e/e8/7b6ee8ac63548c1c8f4e80f33cb91b3c.jpg" />
+                    </div>
+                    <h3 class="text-xl font-headline text-on-surface mb-2">Signature Rings</h3>
+                    <p class="text-on-surface-variant text-sm font-light uppercase tracking-widest">Bridal &amp;
+                        Everyday</p>
+                </div>
+                <!-- Necklaces -->
+                <div
+                    class="group cursor-pointer bg-surface-container-lowest p-6 border border-transparent hover:border-primary/30 transition-all duration-500">
+                    <div class="aspect-square overflow-hidden mb-6" onmousemove="zoom(event, this)"
+                        onmouseleave="reset(this)">
+                        <img class="w-full h-full object-cover transition-transform duration-300"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZEr623OnUNupaPOR9Sir29Ve-YyAdvbAeA78yItu3lglVl-8Cb5i6pqn3jA-T1IH_1Y9fGJkxGC2BS_DoejXawAfS26Ha4lEtkadu785P_aIe708T72-yBd45Pg0KLEXfanBPZs68XVNX2jyFiII3t5BCLZIqfktfEwkVw99Zxs301jgnJvtIvIHRbMxmSvB2gFK23DWnbx0WsO8sTnG5TpVm9_nstuX_jA-FATnGI_bMWX4wAhUksW2rw_NYOj7iaMECOyA-uA" />
+                    </div>
+                    <h3 class="text-xl font-headline text-on-surface mb-2">Heritage Necklaces</h3>
+                    <p class="text-on-surface-variant text-sm font-light uppercase tracking-widest">Antique &amp; Modern
+                    </p>
+                </div>
+                <!-- Bangles -->
+                <div
+                    class="group cursor-pointer bg-surface-container-lowest p-6 border border-transparent hover:border-primary/30 transition-all duration-500">
+                    <div class="aspect-square overflow-hidden mb-6" onmousemove="zoom(event, this)"
+                        onmouseleave="reset(this)">
+                        <img class="w-full h-full object-cover transition-transform duration-300"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdSf16uUsSy9PNG-W64kO7IreKx5-4tgIR4Aa2FwjZvEIqEVej6KelZbrwAEOsSTDaVg7Gt9__6t40iv0W0_dC8J7aLI8SOfVKFs8XSkDVRx1_y56YKXcDt2SuyVV9K_5cEbI9VSHwL1paOOEztCYfSY7IA2GmTdg2ccJI5vvwy5Hae5bs31ZDRMfBFc-mccThTOSDlFM95sgqk04tR7LhrxssAl1RW4sDe8LAx0KnLROlJm8EAXtaJLlTWJO6W5Kqg7H8K6Iouw" />
+                    </div>
+                    <h3 class="text-xl font-headline text-on-surface mb-2">Eternal Bangles</h3>
+                    <p class="text-on-surface-variant text-sm font-light uppercase tracking-widest">Kangan &amp;
+                        Bracelets</p>
+                </div>
+                <!-- Earrings -->
+                <div
+                    class="group cursor-pointer bg-surface-container-lowest p-6 border border-transparent hover:border-primary/30 transition-all duration-500">
+                    <div class="aspect-square overflow-hidden mb-6" onmousemove="zoom(event, this)"
+                        onmouseleave="reset(this)">
+                        <img class="w-full h-full object-cover transition-transform duration-300"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb9SNy4vyT2HLSJSZCxNgQEijliUFkGY6-KDDHrIwdxPQLXfiyTsfk5Trfhcv_eHWUYdJ8eMfKyyEMV94-64025-5MVsRYFTUk88-3YPyLChfglbg9JPNpms85fYbD0yjVXEE3qOBBhNbNI-LoUNjGcfZTaLEcjX-2dDEshObk8TLTAwUFMFTkC-9HC3Ptc-UBOoqmTPtyXMwyuQuRbo4hYtJKS-WUwp1SIcROF4M-Ob0JIg9wU1Vu3AIUtUyI3NV3J-ddthpfKA" />
+                    </div>
+                    <h3 class="text-xl font-headline text-on-surface mb-2">Artisan Earrings</h3>
+                    <p class="text-on-surface-variant text-sm font-light uppercase tracking-widest">Studs &amp; Drops
+                    </p>
+                </div>
+                <!-- Chains -->
+                <div
+                    class="group cursor-pointer bg-surface-container-lowest p-6 border border-transparent hover:border-primary/30 transition-all duration-500">
+                    <div class="aspect-square overflow-hidden mb-6" onmousemove="zoom(event, this)"
+                        onmouseleave="reset(this)">
+                        <img class="w-full h-full object-cover transition-transform duration-300"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOt0QgJJBGDqZ-wGsnrKnv0FHpghLOVA0AtKJ0fj5JAMPFkA6ZIX3S_YOlTLRCxhGjlKszfl1aspTRrVYSAFrj__7-1NN3UEXBfG1lfEf3IZtXyC-vG-rqA1XuZ8ilTm9gHBVFPcNR6UtbWoStnfNBdoJgqvf9OLiIwCAJBGVExj0w456FyBOHIlX5b3xGzKqg2KvxSbGjqt5b44mlk6iGYZ6M74S7I6EsF5LJyZP3lp02bq1VpXk7ASAYmDbx5dDDlIvZUAxpLQ" />
+                    </div>
+                    <h3 class="text-xl font-headline text-on-surface mb-2">Classic Chains</h3>
+                    <p class="text-on-surface-variant text-sm font-light uppercase tracking-widest">Unisex Staples</p>
+                </div>
+                <!-- Bridal -->
+                <div
+                    class="group cursor-pointer bg-surface-container-lowest p-6 border border-transparent hover:border-primary/30 transition-all duration-500">
+                    <div class="aspect-square overflow-hidden mb-6 relative" onmousemove="zoom(event, this)"
+                        onmouseleave="reset(this)">
+                        <div class="absolute inset-0 bg-primary/10 z-10 pointer-events-none"></div>
+                        <img class="w-full h-full object-cover transition-transform duration-300"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDypvOa9TL7cEeeDtfLoAF-X13URpr09SMGptgnXIhhxKlmOH1KGCK5bkL_3DRiWgORaYI8MTQOw0V3VainJH7i00vY9C7NRm4kpY_YeIfcCRjkNfchhBAITSA5A4OwxBVwWBIy8l0EE_QT1LDDqqG4aHjHBlCMrcZP9tq3d_pfpUinWatVvKewD1PM5iVUidypoHSeLApZRntiMozViFJUpvrNT41lzuw8Rwi3w2hOgV3PJhO-oo7nvzQXvxunHl0c__V7RJi6ng" />
+                    </div>
+                    <h3 class="text-xl font-headline text-on-surface mb-2">Bridal Trousseau</h3>
+                    <p class="text-on-surface-variant text-sm font-light uppercase tracking-widest">Wedding Masterpieces
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function zoom(e, container) {
+            const img = container.querySelector("img");
+            const rect = container.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            img.style.transformOrigin = x + "% " + y + "%";
+            img.style.transform = "scale(2)";
+        }
+        function reset(container) {
+            const img = container.querySelector("img");
+            img.style.transform = "scale(1)";
+            img.style.transformOrigin = "center";
+        }
+    </script>
+
+    <!-- Bestsellers -->
+    <section class="py-24 px-12 bg-surface-container-low">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl font-headline text-on-surface mb-4">Our Bestsellers</h2>
+                <div class="w-24 h-[1px] bg-primary/30 mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Product 1 -->
+                <div class="group">
+                    <div class="bg-surface-container-lowest mb-6 overflow-hidden relative">
+                        <img class="w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwckZEJslgqjubQDl4d6wMOJNQaIWkoQKI1O9YRq2PCfXX5e9wWer7qalti_ijii9Umzn0IOeTKBdgjXPXV0udF91wjSPt_rvwJSiy2tkBpA-g0uvMK6uUqh77hkGQhGU_C4sCDdeILG458-1itm6YVbPPip6a5nbjTXqQCXRzacXExQizuEgTigh5itndwbCNdY_-axF5egfbDeSRoaLlUGh5DJQ0TOHUplCreExLse7FOsgcuCqeRTZWzpMmBFdTRtSm4viN_Q" />
+                        <button
+                            class="absolute bottom-0 left-0 w-full bg-on-surface text-white py-4 uppercase tracking-widest text-xs translate-y-full group-hover:translate-y-0 transition-transform duration-300">Quick
+                            View</button>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-on-surface font-headline">The Mayura Pendant</h3>
+                        <p class="text-primary text-sm font-semibold">₹ 42,500</p>
+                        <button
+                            class="w-full text-center border border-outline-variant py-3 uppercase tracking-widest text-[10px] hover:border-primary hover:text-primary transition-all">Enquire
+                            Now</button>
+                    </div>
+                </div>
+                <!-- Product 2 -->
+                <div class="group">
+                    <div class="bg-surface-container-lowest mb-6 overflow-hidden relative">
+                        <img class="w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtvAS7cfjQ2aDi_f0x1A7ZTgywRBLnKNBHCK3FPte9iSiiuyIqfwUfyyxXYtRLfjsQjtrWGxSMcwj-nJF10cJx7AGBNrO9BN9aT_-D3051yTRSxYQeeJQultlKhaQbHUtcP46DSXxy2ohIXOvbm6LSfC_OM35q7AHL2ghYW9XUs0eZVTyw1lBm0GHew-KshfoknOlEGAVeq1Lv12PT4gfKLKIowOOJg3Gnuc8b2qL0w3p6g0R91pcxpHxyyc2LXTSpDqTlZgHfww" />
+                        <button
+                            class="absolute bottom-0 left-0 w-full bg-on-surface text-white py-4 uppercase tracking-widest text-xs translate-y-full group-hover:translate-y-0 transition-transform duration-300">Quick
+                            View</button>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-on-surface font-headline">Modern Aura Bangles</h3>
+                        <p class="text-primary text-sm font-semibold">₹ 1,28,000</p>
+                        <button
+                            class="w-full text-center border border-outline-variant py-3 uppercase tracking-widest text-[10px] hover:border-primary hover:text-primary transition-all">Enquire
+                            Now</button>
+                    </div>
+                </div>
+                <!-- Product 3 -->
+                <div class="group">
+                    <div class="bg-surface-container-lowest mb-6 overflow-hidden relative">
+                        <img class="w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJp6hNs2hEVzFiOD0dsnQwQjDswdlpTE3xQRJ4Fh6ki9kyeckfKPs2LBlxEIY9EIY9j9Kk1Obaivz0_LZyeTGRomERjggdtA6yPoXW3L8HelIJoxsa57KEidy6URm6XBSrW6_Rwvm7FNSvLSfAfWcIuC0BhzS2DXNPEiQVdrnc36hemVMwgzbKmNOENj52SvclKjQWfrfC4hoSsKwP5_A6bsixfzRozk8E14D5cLoqZZKwr1-bpPUFa2ZuXLH25M_KHk7vcD4Rqw" />
+                        <button
+                            class="absolute bottom-0 left-0 w-full bg-on-surface text-white py-4 uppercase tracking-widest text-xs translate-y-full group-hover:translate-y-0 transition-transform duration-300">Quick
+                            View</button>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-on-surface font-headline">Goddess Temple Haar</h3>
+                        <p class="text-primary text-sm font-semibold">₹ 3,45,000</p>
+                        <button
+                            class="w-full text-center border border-outline-variant py-3 uppercase tracking-widest text-[10px] hover:border-primary hover:text-primary transition-all">Enquire
+                            Now</button>
+                    </div>
+                </div>
+                <!-- Product 4 -->
+                <div class="group">
+                    <div class="bg-surface-container-lowest mb-6 overflow-hidden relative">
+                        <img class="w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGmmhjuZn--ELUv9tvHKTAze8HOt_lij4RmkM7y-LkfikWq3_0UFvwNkRkS2mYcjZiujWODFKShBG77Ooj0xSF99NbDzPSDuL6ihmBE6WczyxGgghU5vJkuPOCgevLPX04-pDTeDBrzBFtPP1zyv1Lajj_RaOEZofZlJunFfV5-rCHo3I1Ad77br-pRzBXw-uD8m0P3UuK8U3mfVyYUibsxeTYSAOzxchJUDLrbkbEFhZAGNcwythFOAtrHqGcncftf58RTqoxYw" />
+                        <button
+                            class="absolute bottom-0 left-0 w-full bg-on-surface text-white py-4 uppercase tracking-widest text-xs translate-y-full group-hover:translate-y-0 transition-transform duration-300">Quick
+                            View</button>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-on-surface font-headline">Celeste Diamond Studs</h3>
+                        <p class="text-primary text-sm font-semibold">₹ 85,900</p>
+                        <button
+                            class="w-full text-center border border-outline-variant py-3 uppercase tracking-widest text-[10px] hover:border-primary hover:text-primary transition-all">Enquire
+                            Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 px-12 bg-surface">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="uppercase tracking-[0.2em] text-primary text-sm mb-4 block">Kind Words</span>
+                <h2 class="text-4xl font-headline text-on-surface italic">Stories of Celebration</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="p-10 bg-surface-container-low border-l-4 border-primary">
+                    <div class="flex text-primary mb-6">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </div>
+                    <p class="serif-italic text-on-surface text-lg leading-relaxed mb-8">"The craftsmanship on my
+                        wedding necklace was beyond expectation. Bharthi Jewellers truly understands the value of
+                        heritage in every cut and curve."</p>
+                    <div>
+                        <p class="font-headline text-on-surface uppercase tracking-widest text-xs">Priyanka Sharma</p>
+                        <p class="text-on-surface-variant text-[10px] uppercase">Bangalore</p>
+                    </div>
+                </div>
+                <div class="p-10 bg-surface-container-low border-l-4 border-primary">
+                    <div class="flex text-primary mb-6">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </div>
+                    <p class="serif-italic text-on-surface text-lg leading-relaxed mb-8">"I've been a customer since
+                        1990. The trust they have built over the decades is as pure as their 24k gold. Highly
+                        recommended for bespoke work."</p>
+                    <div>
+                        <p class="font-headline text-on-surface uppercase tracking-widest text-xs">Rajesh Varma</p>
+                        <p class="text-on-surface-variant text-[10px] uppercase">Mysore</p>
+                    </div>
+                </div>
+                <div class="p-10 bg-surface-container-low border-l-4 border-primary">
+                    <div class="flex text-primary mb-6">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </div>
+                    <p class="serif-italic text-on-surface text-lg leading-relaxed mb-8">"A beautiful blend of
+                        traditional aesthetics and modern service. Their digital catalog made choosing my anniversary
+                        gift so effortless."</p>
+                    <div>
+                        <p class="font-headline text-on-surface uppercase tracking-widest text-xs">Ananya Iyer</p>
+                        <p class="text-on-surface-variant text-[10px] uppercase">Hyderabad</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Map -->
+    <section class="py-24 px-12 bg-surface-container">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="flex flex-col md:flex-row gap-16">
+                <div class="w-full md:w-1/2 space-y-12">
+                    <div>
+                        <h2 class="text-4xl font-headline text-on-surface mb-6">Visit Our Atelier</h2>
+                        <p class="text-on-surface-variant font-light leading-relaxed max-w-md">Experience the fine art
+                            of jewellery making in person. Our advisors are ready to assist you in finding your next
+                            treasure.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex gap-6">
+                            <span class="material-symbols-outlined text-primary">location_on</span>
+                            <div>
+                                <h5 class="font-headline text-on-surface text-sm uppercase tracking-widest mb-2">
+                                    Flagship Boutique</h5>
+                                <p class="text-on-surface-variant text-sm font-light">128 MG Road, Heritage
+                                    District,<br />Bangalore, KA 560001</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <span class="material-symbols-outlined text-primary">call</span>
+                            <div>
+                                <h5 class="font-headline text-on-surface text-sm uppercase tracking-widest mb-2">
+                                    Enquiries</h5>
+                                <p class="text-on-surface-variant text-sm font-light">+91 80 4455
+                                    6677<br />contact@bharthijewellers.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        class="flex items-center gap-4 bg-[#25D366] text-white px-10 py-4 uppercase tracking-widest text-xs hover:shadow-lg transition-all">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.511.895 2.994 1.348 4.704 1.349 5.178 0 9.389-4.211 9.392-9.39 0-2.515-.979-4.88-2.757-6.658s-4.144-2.757-6.66-2.757c-5.179 0-9.39 4.211-9.392 9.39 0 1.81.512 3.236 1.488 4.747l-.999 3.648 3.724-.977zm11.387-5.464c-.34-.17-2.012-.993-2.324-1.106-.313-.114-.541-.17-.768.17-.227.34-.879 1.106-1.078 1.333-.199.227-.398.256-.738.085-.34-.17-1.437-.529-2.737-1.688-1.011-.902-1.693-2.016-1.892-2.357-.199-.34-.021-.524.149-.693.153-.152.34-.398.511-.597.17-.199.227-.34.341-.569.114-.227.057-.426-.028-.597-.085-.17-.768-1.851-1.05-2.532-.275-.662-.553-.573-.768-.584l-.653-.011c-.227 0-.597.085-.909.426-.313.341-1.193 1.165-1.193 2.842 0 1.677 1.222 3.297 1.393 3.524.17.227 2.404 3.672 5.823 5.145.813.35 1.448.56 1.943.717.817.259 1.561.222 2.149.135.656-.097 2.012-.823 2.296-1.619.284-.796.284-1.478.199-1.619-.085-.141-.313-.227-.653-.398z" />
+                        </svg>
+                        WhatsApp Enquire
+                    </button>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <div
+                        class="h-[500px] bg-surface-dim relative grayscale group hover:grayscale-0 transition-all duration-700 overflow-hidden">
+                        <img class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDscU-mjl6IDohG5jQTWjm7C_PUryx-dbh7a61soCjSEviAfmBYeAHUh9cgjlD1EaQUfrD6eaJPZrr9C6ZOA6VQdKYuDP2VrUyu3GnmxH3ON1KF4KHo2m8csYRnVHfJxofuwYUyrF5y5FdMv8xmRIO7LuFEB6K18aYy8he0wmqa6F7lwVRp5_mNmUArsxKB17cnGYqwAA6voIiU1rpMGAX5XCMOtIOzGrSETiZeF5iYUGlnLZ3DkgXljpCu5GBmUh0_jkCrtZIocQ" />
+                        <div
+                            class="absolute inset-0 border-[20px] border-surface-container transition-all group-hover:border-[0px]">
+                        </div>
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary animate-pulse">
+                            <span class="material-symbols-outlined">location_on</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-zinc-950 dark:bg-black text-amber-500 w-full py-16 px-12 border-t border-zinc-800">
+        <div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="space-y-6">
+                <div class="font-serif text-xl text-amber-500 uppercase tracking-[0.2em]">Bharthi Jewellers</div>
+                <p class="text-zinc-500 tracking-tight leading-relaxed">Crafting legacies in gold and stone since 1985.
+                    Every piece is a testament to the artisan's soul and the wearer's grace.</p>
+                <div class="flex gap-4">
+                    <a class="w-8 h-8 rounded-full border border-zinc-800 flex items-center justify-center hover:bg-amber-500 hover:text-zinc-950 transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-sm">public</span>
+                    </a>
+                    <a class="w-8 h-8 rounded-full border border-zinc-800 flex items-center justify-center hover:bg-amber-500 hover:text-zinc-950 transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-sm">camera</span>
+                    </a>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <h6 class="text-white text-xs uppercase tracking-[0.2em] font-semibold">The Atelier</h6>
+                <ul class="space-y-4">
+                    <li><a class="text-zinc-500 hover:text-amber-400 transition-colors" href="#">Our Story</a></li>
+                    <li><a class="text-zinc-500 hover:text-amber-400 transition-colors" href="#">Craftsmanship</a></li>
+                    <li><a class="text-zinc-500 hover:text-amber-400 transition-colors" href="#">Sustainability</a></li>
+                    <li><a class="text-zinc-500 hover:text-amber-400 transition-colors" href="#">Journal</a></li>
+                </ul>
+            </div>
+            <div class="space-y-6">
+                <h6 class="text-white text-xs uppercase tracking-[0.2em] font-semibold">Services</h6>
+                <ul class="space-y-4">
+                    <li><a class="text-zinc-500 hover:text-amber-400 transition-colors" href="#">Care Guide</a></li>
+                    <li><a class="text-zinc-500 hover:text-amber-400 transition-colors" href="#">Bespoke Service</a>
+                    </li>
+                    <li><a class="text-zinc-500 hover:text-amber-400 transition-colors" href="#">Valuation</a></li>
+                    <li><a class="text-zinc-500 hover:text-amber-400 transition-colors" href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="space-y-6">
+                <h6 class="text-white text-xs uppercase tracking-[0.2em] font-semibold">Newsletter</h6>
+                <p class="text-zinc-500 italic">Receive exclusive access to new collections and heritage stories.</p>
+                <div class="flex border-b border-zinc-800 pb-2">
+                    <input
+                        class="bg-transparent border-none focus:ring-0 text-white placeholder-zinc-700 w-full text-sm"
+                        placeholder="Email Address" type="email" />
+                    <button class="material-symbols-outlined text-amber-500">arrow_forward</button>
+                </div>
+            </div>
+        </div>
+        <div
+            class="max-w-screen-2xl mx-auto mt-20 pt-8 border-t border-zinc-900 flex justify-between items-center text-[10px] uppercase tracking-widest text-zinc-600">
+            <div>© 2024 Bharthi Jewellers. Crafted with Heritage.</div>
+            <div class="flex gap-8">
+                <a class="hover:text-white transition-colors" href="#">Privacy</a>
+                <a class="hover:text-white transition-colors" href="#">Terms</a>
+                <a class="hover:text-white transition-colors" href="#">Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const btn = document.getElementById("menu-btn");
+        const menu = document.getElementById("menu");
+        btn.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+            menu.classList.toggle("flex");
+        });
+
+        // Collections toggle
+        const colBtn = document.getElementById("collection-btn");
+        const colMenu = document.getElementById("collection-menu");
+        colBtn.addEventListener("click", () => {
+            colMenu.classList.toggle("hidden");
+            colMenu.classList.toggle("flex");
+        });
+    </script>
+
+    <!-- Firebase: use compat SDK only, NO import statements -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCvjdq9MEy08JIqHQAbMOgJcopylmJ4Rlc",
+            authDomain: "bharthi-jewellery.firebaseapp.com",
+            projectId: "bharthi-jewellery",
+            storageBucket: "bharthi-jewellery.firebasestorage.app",
+            messagingSenderId: "411800026042",
+            appId: "1:411800026042:web:b5b958337dc99a54307b83",
+            databaseURL: "https://bharthi-jewellery-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById("username").innerText = user.displayName;
+            } else {
+                document.getElementById("username").innerText = "";
+            }
+        });
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                window.location.reload();
+            });
+        }
+
+        // Google provider
+        const provider = new firebase.auth.GoogleAuthProvider();
+
+        let isLoggingIn = false;
+
+        // 🔥 LOGIN FUNCTION
+        function loginAndRedirect(page) {
+
+            if (isLoggingIn) return;
+
+            const user = firebase.auth().currentUser;
+
+            // ✅ ALREADY LOGGED IN
+            if (user) {
+                window.location.href = page;
+                return;
+            }
+
+            isLoggingIn = true;
+
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+
+                    const user = result.user;
+
+                    console.log("LOGIN SUCCESS:", user);
+
+                    // 🔥 SAVE DATA
+                    return firebase.database().ref('users/' + user.uid).set({
+                        name: user.displayName,
+                        email: user.email,
+                        photo: user.photoURL,
+                        lastLogin: new Date().toString()
+                    });
+
+                })
+                .then(() => {
+                    console.log("DATA SAVED ✅");
+
+                    // 👉 redirect AFTER save
+                    window.location.href = page;
+                })
+                .catch((error) => {
+                    console.log("ERROR ❌", error);
+                    isLoggingIn = false;
+                });
+        }
+    </script>
+
+</body>
+
+</html>
