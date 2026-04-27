@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bharathi Jewellers | Pure Gold · Pure Trust</title>
+  <meta name="description" content="Bharathi Jewellers – Tamil Nadu's finest gold and diamond jewellery. Shop rings, chains, earrings, bridal sets and more. Est. 1985." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@300;400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+  <style>
+    :root {
+      --gold: #b8860b;
+      --gold-light: #d4a017;
+      --gold-pale: #fdf6e3;
+      --gold-border: #e8d5a3;
+      --charcoal: #1a1a1a;
+      --cream: #fafafa;
+      --white: #ffffff;
+      --shadow-gold: 0 4px 30px rgba(184,134,11,0.15);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Jost', sans-serif;
+      background: #fff;
+      color: #1a1a1a;
+      overflow-x: hidden;
+    }
+    .font-display { font-family: 'Cormorant Garamond', serif; }
+    .font-tamil { font-family: 'Noto Sans Tamil', sans-serif; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      font-size: inherit;
+      line-height: 1;
+      vertical-align: middle;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f5f5f5; }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ===== TICKER ===== */
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-inner { display: flex; animation: ticker 28s linear infinite; width: max-content; }
+    .ticker-inner:hover { animation-play-state: paused; }
+
+    /* ===== FADE IN ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.8s ease both; }
+    .fade-up-1 { animation-delay: 0.1s; }
+    .fade-up-2 { animation-delay: 0.25s; }
+    .fade-up-3 { animation-delay: 0.4s; }
+    .fade-up-4 { animation-delay: 0.55s; }
+
+    /* ===== HERO SLIDER ===== */
+    .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; }
+    .hero-slide.active { opacity: 1; }
+
+    /* ===== COLLECTION CARD HOVER ===== */
+    .coll-card { position: relative; overflow: hidden; cursor: pointer; }
+    .coll-card img { transition: transform 0.7s ease; }
+    .coll-card:hover img { transform: scale(1.08); }
+    .coll-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%); opacity: 0.85; transition: opacity 0.4s; }
+    .coll-card:hover .coll-overlay { opacity: 1; }
+    .coll-btn { transform: translateY(8px); transition: transform 0.4s, opacity 0.4s; opacity: 0; }
+    .coll-card:hover .coll-btn { transform: translateY(0); opacity: 1; }
+
+    /* ===== PRODUCT CARD ===== */
+    .prod-card { position: relative; }
+    .prod-img-wrap { overflow: hidden; background: #f9f7f3; }
+    .prod-img-wrap img { transition: transform 0.7s ease; width: 100%; object-fit: cover; }
+    .prod-card:hover .prod-img-wrap img { transform: scale(1.07); }
+    .quick-view-btn { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(26,26,26,0.92); color: #fff; text-align: center; padding: 12px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; transform: translateY(100%); transition: transform 0.35s ease; }
+    .prod-card:hover .quick-view-btn { transform: translateY(0); }
+    .wishlist-btn { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; transition: background 0.3s; z-index: 2; }
+    .wishlist-btn:hover { background: #fee2e2; }
+    .wishlist-btn .material-symbols-outlined { font-size: 18px; color: #aaa; }
+    .wishlist-btn.active .material-symbols-outlined { color: #e11d48; font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+    /* ===== GOLD BADGE ===== */
+    .gold-badge { background: linear-gradient(135deg, #d4a017, #b8860b); color: #fff; }
+
+    /* ===== 360 VIEWER ===== */
+    .viewer-360 { user-select: none; cursor: grab; }
+    .viewer-360:active { cursor: grabbing; }
+    @keyframes rotateHint { 0%,100%{transform:translateX(0)}50%{transform:translateX(12px)} }
+    .rotate-hint { animation: rotateHint 1.8s ease infinite; }
+
+    /* ===== TESTIMONIAL CAROUSEL ===== */
+    .testimonial-track { display: flex; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+    /* ===== NAV DROPDOWN ===== */
+    .nav-dropdown { opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; }
+    .nav-item:hover .nav-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+
+    /* ===== GOLD DIVIDER ===== */
+    .gold-divider { height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
+
+    /* ===== MOBILE MENU ===== */
+    #mobile-menu { transform: translateX(-100%); transition: transform 0.4s ease; }
+    #mobile-menu.open { transform: translateX(0); }
+
+    /* ===== PRODUCT MODAL ===== */
+    #product-modal { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    #product-modal.open { opacity: 1; pointer-events: all; }
+
+    /* ===== BACK TO TOP ===== */
+    #back-top { opacity: 0; transform: translateY(20px); transition: all 0.3s; pointer-events: none; }
+    #back-top.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+
+    /* ===== WHATSAPP FLOAT ===== */
+    .wa-float { position: fixed; bottom: 90px; right: 24px; z-index: 999; }
+
+    /* ===== SECTION TITLE ===== */
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 2px;
+      background: var(--gold);
+      margin: 12px auto 0;
+    }
+    .section-title.left::after { margin-left: 0; }
+
+    /* ===== OFFER BANNER ===== */
+    .offer-card { position: relative; overflow: hidden; }
+    .offer-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent 0deg, rgba(212,160,23,0.08) 90deg, transparent 180deg); animation: shimmer-rotate 6s linear infinite; }
+    @keyframes shimmer-rotate { to { transform: rotate(360deg); } }
+
+    /* ===== INPUT FOCUS ===== */
+    input:focus { outline: none; border-color: var(--gold); }
+
+    /* ===== NAV LINK UNDERLINE ===== */
+    .nav-link { position: relative; padding-bottom: 4px; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1.5px; background: var(--gold); transition: width 0.3s ease; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ===== GOLD BUTTON ===== */
+    .btn-gold { background: linear-gradient(135deg, #d4a017, #b8860b); color: #fff; transition: all 0.3s; }
+    .btn-gold:hover { background: linear-gradient(135deg, #b8860b, #8b6508); box-shadow: 0 4px 20px rgba(184,134,11,0.4); transform: translateY(-1px); }
+
+    /* ===== BANNER SLIDE ===== */
+    @keyframes kenBurns { 0%{transform:scale(1)}100%{transform:scale(1.06)} }
+    .ken-burns { animation: kenBurns 12s ease-out alternate infinite; }
+
+    /* ===== GOLD RATE TICKER ===== */
+    .rate-badge { background: linear-gradient(135deg, #1a1a1a, #2d2d2d); }
+
+    /* ===== LAZY IMAGE SHIMMER ===== */
+    .shimmer { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero-text h1 { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== PROMO TICKER ===== -->
+<div class="bg-[#1a1a1a] text-white py-2 overflow-hidden text-xs tracking-widest">
+  <div class="ticker-inner">
+    <span class="px-12 opacity-80">🏅 BIS HALLMARKED GOLD &nbsp;·&nbsp;</span>
+    <span class="px-12" style="color:var(--gold-light)">✨ FREE MAKING ON ORDERS ABOVE ₹50,000 &nbsp;·&nbsp;</span>
+    <span class="px-12 opacity-80">💎 CERTIFIED DIAMONDS &nbsp;·&nbsp;</span>
+    <span class="px-12" style="color:var(--gold-light)">🚚 FREE INSURED DELIVERY PAN INDIA &nbsp;·&nbsp;</span>
+    <span class="px-12 opacity-80">🔁 30-DAY EASY EXCHANGE &nbsp;·&nbsp;</span>
+    <span class="px-12" style="color:var(--gold-light)">📞 CALL US: +91 96005 45678 &nbsp;·&nbsp;</span>
+    <!-- Duplicate for seamless loop -->
+    <span class="px-12 opacity-80">🏅 BIS HALLMARKED GOLD &nbsp;·&nbsp;</span>
+    <span class="px-12" style="color:var(--gold-light)">✨ FREE MAKING ON ORDERS ABOVE ₹50,000 &nbsp;·&nbsp;</span>
+    <span class="px-12 opacity-80">💎 CERTIFIED DIAMONDS &nbsp;·&nbsp;</span>
+    <span class="px-12" style="color:var(--gold-light)">🚚 FREE INSURED DELIVERY PAN INDIA &nbsp;·&nbsp;</span>
+  </div>
+</div>
+
+<!-- ===== TOP NAV ===== -->
+<nav id="navbar" class="sticky top-0 z-50 bg-white border-b border-gray-100 transition-shadow duration-300" style="box-shadow: 0 2px 20px rgba(0,0,0,0.06);">
+  <div class="max-w-screen-2xl mx-auto px-4 md:px-8 flex items-center justify-between h-20">
+
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-3 flex-shrink-0">
+      <img src="assets/logo.png" alt="Bharathi Jewellers" class="h-12 w-12 object-contain rounded-full"
+        onerror="this.style.display='none'; document.getElementById('logo-text').style.display='flex';" />
+      <div id="logo-text" class="hidden flex-col leading-tight">
+        <span class="font-display text-2xl font-bold" style="color:var(--gold)">Bharathi</span>
+        <span class="font-display text-lg font-light tracking-wider" style="color:var(--charcoal)">Jewellers</span>
+      </div>
+      <div class="flex-col leading-tight hidden sm:flex">
+        <span class="font-display text-xl font-bold" style="color:var(--gold)">Bharathi Jewellers</span>
+        <span class="font-tamil text-[10px] text-gray-500 tracking-wide">தங்கம் உருக்கி தழல் குறைத்து தேனாக்கி எங்கும் பரப்புவோம்</span>
+      </div>
+    </a>
+
+    <!-- Desktop Nav -->
+    <div class="hidden lg:flex items-center gap-8">
+
+      <div class="nav-item relative">
+        <button class="nav-link font-medium text-[13px] uppercase tracking-wider text-gray-700 hover:text-amber-700 flex items-center gap-1">
+          Collections <span class="material-symbols-outlined text-[16px]">expand_more</span>
+        </button>
+        <div class="nav-dropdown absolute top-full left-0 mt-2 w-64 bg-white shadow-2xl border border-gray-100 z-50">
+          <div class="py-2">
+            <a href="pages/gold-diamond-rings.html" class="flex items-center gap-3 px-6 py-3 hover:bg-amber-50 text-[13px] text-gray-700 hover:text-amber-700 transition-colors">
+              <span class="material-symbols-outlined text-[16px]" style="color:var(--gold)">diamond</span> Gold &amp; Diamond Rings
+            </a>
+            <a href="pages/chains.html" class="flex items-center gap-3 px-6 py-3 hover:bg-amber-50 text-[13px] text-gray-700 hover:text-amber-700 transition-colors">
+              <span class="material-symbols-outlined text-[16px]" style="color:var(--gold)">link</span> Chains &amp; Pendants
+            </a>
+            <a href="pages/earrings-studs.html" class="flex items-center gap-3 px-6 py-3 hover:bg-amber-50 text-[13px] text-gray-700 hover:text-amber-700 transition-colors">
+              <span class="material-symbols-outlined text-[16px]" style="color:var(--gold)">star</span> Earrings &amp; Studs
+            </a>
+            <a href="pages/mens-jewellery.html" class="flex items-center gap-3 px-6 py-3 hover:bg-amber-50 text-[13px] text-gray-700 hover:text-amber-700 transition-colors">
+              <span class="material-symbols-outlined text-[16px]" style="color:var(--gold)">person</span> Men's Jewellery
+            </a>
+            <div class="gold-divider my-2 mx-6"></div>
+            <a href="#" class="flex items-center gap-3 px-6 py-3 hover:bg-amber-50 text-[13px] font-semibold text-amber-700 transition-colors">
+              <span class="material-symbols-outlined text-[16px]">favorite</span> Bridal Sets
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item relative">
+        <button class="nav-link font-medium text-[13px] uppercase tracking-wider text-gray-700 hover:text-amber-700 flex items-center gap-1">
+          Gold Rate <span class="material-symbols-outlined text-[16px]">expand_more</span>
+        </button>
+        <div class="nav-dropdown absolute top-full left-0 mt-2 w-72 bg-white shadow-2xl border border-gray-100 z-50 p-4">
+          <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-3">Today's Rates · Coimbatore</p>
+          <div class="space-y-2">
+            <div class="flex justify-between items-center py-2 border-b border-gray-100">
+              <span class="text-sm font-medium">22K Gold (per gram)</span>
+              <span class="font-bold text-amber-700" id="rate-22k">₹ 6,843</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-100">
+              <span class="text-sm font-medium">24K Gold (per gram)</span>
+              <span class="font-bold text-amber-700" id="rate-24k">₹ 7,467</span>
+            </div>
+            <div class="flex justify-between items-center py-2">
+              <span class="text-sm font-medium">Silver (per gram)</span>
+              <span class="font-bold text-amber-700">₹ 95</span>
+            </div>
+          </div>
+          <p class="text-[9px] text-gray-400 mt-3">*Rates updated daily. GST extra.</p>
+        </div>
+      </div>
+
+      <a href="#offers" class="nav-link font-medium text-[13px] uppercase tracking-wider text-gray-700 hover:text-amber-700">Offers</a>
+      <a href="#about" class="nav-link font-medium text-[13px] uppercase tracking-wider text-gray-700 hover:text-amber-700">About</a>
+      <a href="#contact" class="nav-link font-medium text-[13px] uppercase tracking-wider text-gray-700 hover:text-amber-700">Contact</a>
+    </div>
+
+    <!-- Right Side -->
+    <div class="flex items-center gap-3">
+
+      <!-- Search -->
+      <div class="hidden md:flex items-center gap-2 border border-gray-200 rounded-full px-4 py-2 hover:border-amber-400 transition-colors">
+        <span class="material-symbols-outlined text-gray-400 text-[18px]">search</span>
+        <input type="text" placeholder="Search jewellery..." class="text-[12px] w-36 border-none bg-transparent focus:outline-none text-gray-600" />
+      </div>
+
+      <!-- Gold Rate Badge -->
+      <div class="rate-badge hidden lg:flex items-center gap-2 px-4 py-2 rounded-full text-white text-[11px] tracking-wider">
+        <span class="material-symbols-outlined text-amber-400 text-[16px]">trending_up</span>
+        <span>22K: <strong id="rate-badge">₹6,843</strong>/g</span>
+      </div>
+
+      <!-- User -->
+      <div class="flex items-center gap-2">
+        <span id="nav-username" class="hidden text-[12px] text-amber-700 font-medium"></span>
+        <button onclick="handleAuthClick()" id="auth-btn" class="btn-gold px-4 py-2 text-[11px] uppercase tracking-wider rounded-full font-semibold">
+          Sign In
+        </button>
+      </div>
+
+      <!-- Visit Store -->
+      <a href="#contact" class="hidden md:block border border-amber-700 text-amber-700 px-4 py-2 text-[11px] uppercase tracking-wider font-semibold hover:bg-amber-700 hover:text-white transition-all rounded-full">
+        Visit Store
+      </a>
+
+      <!-- Mobile Hamburger -->
+      <button id="hamburger" class="lg:hidden p-2 text-gray-700" aria-label="Menu">
+        <span class="material-symbols-outlined text-[26px]">menu</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== MOBILE MENU ===== -->
+<div id="mobile-menu" class="fixed top-0 left-0 h-full w-80 bg-white z-[60] shadow-2xl overflow-y-auto">
+  <div class="flex items-center justify-between p-6 border-b border-gray-100">
+    <span class="font-display text-xl font-bold" style="color:var(--gold)">Bharathi Jewellers</span>
+    <button id="close-menu" class="text-gray-500 hover:text-gray-800">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <div class="p-6 space-y-1">
+    <div class="rate-badge flex items-center gap-2 px-4 py-3 rounded-lg text-white text-[12px] mb-4">
+      <span class="material-symbols-outlined text-amber-400 text-[16px]">trending_up</span>
+      Today's Gold: 22K ₹6,843/g · 24K ₹7,467/g
+    </div>
+    <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-3 mt-4">Collections</p>
+    <a href="pages/gold-diamond-rings.html" class="flex items-center gap-3 py-3 border-b border-gray-50 text-gray-700 font-medium">
+      <span class="material-symbols-outlined text-[18px]" style="color:var(--gold)">diamond</span> Gold &amp; Diamond Rings
+    </a>
+    <a href="pages/chains.html" class="flex items-center gap-3 py-3 border-b border-gray-50 text-gray-700 font-medium">
+      <span class="material-symbols-outlined text-[18px]" style="color:var(--gold)">link</span> Chains &amp; Pendants
+    </a>
+    <a href="pages/earrings-studs.html" class="flex items-center gap-3 py-3 border-b border-gray-50 text-gray-700 font-medium">
+      <span class="material-symbols-outlined text-[18px]" style="color:var(--gold)">star</span> Earrings &amp; Studs
+    </a>
+    <a href="pages/mens-jewellery.html" class="flex items-center gap-3 py-3 border-b border-gray-50 text-gray-700 font-medium">
+      <span class="material-symbols-outlined text-[18px]" style="color:var(--gold)">person</span> Men's Jewellery
+    </a>
+    <a href="#" class="flex items-center gap-3 py-3 border-b border-gray-50 text-amber-700 font-semibold">
+      <span class="material-symbols-outlined text-[18px]">favorite</span> Bridal Sets
+    </a>
+    <div class="pt-6 space-y-3">
+      <a href="#offers" onclick="closeMobileMenu()" class="block py-3 text-gray-700 font-medium border-b border-gray-50">Offers</a>
+      <a href="#about" onclick="closeMobileMenu()" class="block py-3 text-gray-700 font-medium border-b border-gray-50">About Us</a>
+      <a href="#contact" onclick="closeMobileMenu()" class="block py-3 text-gray-700 font-medium">Contact</a>
+    </div>
+    <div class="pt-6">
+      <a href="https://wa.me/919600545678" target="_blank" class="flex items-center justify-center gap-2 bg-green-500 text-white py-3 rounded-full font-semibold text-sm">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.511.895 2.994 1.348 4.704 1.349 5.178 0 9.389-4.211 9.392-9.39 0-2.515-.979-4.88-2.757-6.658s-4.144-2.757-6.66-2.757c-5.179 0-9.39 4.211-9.392 9.39 0 1.81.512 3.236 1.488 4.747l-.999 3.648 3.724-.977zm11.387-5.464c-.34-.17-2.012-.993-2.324-1.106-.313-.114-.541-.17-.768.17-.227.34-.879 1.106-1.078 1.333-.199.227-.398.256-.738.085-.34-.17-1.437-.529-2.737-1.688-1.011-.902-1.693-2.016-1.892-2.357-.199-.34-.021-.524.149-.693.153-.152.34-.398.511-.597.17-.199.227-.34.341-.569.114-.227.057-.426-.028-.597-.085-.17-.768-1.851-1.05-2.532-.275-.662-.553-.573-.768-.584l-.653-.011c-.227 0-.597.085-.909.426-.313.341-1.193 1.165-1.193 2.842 0 1.677 1.222 3.297 1.393 3.524.17.227 2.404 3.672 5.823 5.145.813.35 1.448.56 1.943.717.817.259 1.561.222 2.149.135.656-.097 2.012-.823 2.296-1.619.284-.796.284-1.478.199-1.619-.085-.141-.313-.227-.653-.398z"/></svg>
+        WhatsApp Enquiry
+      </a>
+    </div>
+  </div>
+</div>
+<div id="menu-overlay" class="fixed inset-0 bg-black/40 z-[55] hidden"></div>
+
+<!-- ===== HERO SECTION ===== -->
+<section class="relative h-[88vh] min-h-[560px] overflow-hidden bg-[#0d0d0d]">
+  <!-- SLIDES -->
+  <div id="hero-slides" class="relative h-full">
+
+    <div class="hero-slide active" style="background: linear-gradient(135deg, #0d0d0d 0%, #1a1209 100%);">
+      <div class="absolute inset-0 ken-burns"
+        style="background: url('https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=1600&q=80') center/cover no-repeat; opacity:0.4;"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+      <div class="relative h-full flex items-center max-w-screen-2xl mx-auto px-8 md:px-16">
+        <div class="hero-text max-w-2xl text-white fade-up">
+          <div class="inline-block border border-amber-600/50 px-4 py-1 text-[11px] tracking-[0.3em] uppercase text-amber-400 mb-6 fade-up fade-up-1">
+            Est. 1985 · Coimbatore
+          </div>
+          <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-light leading-none mb-6 fade-up fade-up-2">
+            Pure Gold,<br /><em style="color:var(--gold-light)">Pure Trust</em>
+          </h1>
+          <p class="text-lg md:text-xl text-white/70 max-w-lg leading-relaxed mb-10 font-light fade-up fade-up-3">
+            Crafting heirlooms for four decades. BIS Hallmarked gold. Certified diamonds. Timeless legacy.
+          </p>
+          <div class="flex flex-wrap gap-4 fade-up fade-up-4">
+            <a href="#collections" class="btn-gold px-8 py-4 text-[13px] uppercase tracking-widest font-semibold rounded-full">
+              Explore Collections
+            </a>
+            <a href="#360-viewer" class="border border-white/40 text-white px-8 py-4 text-[13px] uppercase tracking-widest font-semibold rounded-full hover:border-amber-400 hover:text-amber-400 transition-all">
+              360° View
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-slide" style="background:#0a0a14;">
+      <div class="absolute inset-0 ken-burns"
+        style="background: url('https://images.unsplash.com/photo-1543294001-f7cd5d7fb516?w=1600&q=80') center/cover no-repeat; opacity:0.35;"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+      <div class="relative h-full flex items-center max-w-screen-2xl mx-auto px-8 md:px-16">
+        <div class="hero-text max-w-2xl text-white">
+          <div class="inline-block border border-amber-600/50 px-4 py-1 text-[11px] tracking-[0.3em] uppercase text-amber-400 mb-6">
+            New · Bridal 2025
+          </div>
+          <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-light leading-none mb-6">
+            Your Dream<br /><em style="color:var(--gold-light)">Bridal Set</em>
+          </h1>
+          <p class="text-lg text-white/70 max-w-lg leading-relaxed mb-10 font-light">
+            Curated bridal trousseau with temple work, nakshi, and modern diamond designs for your perfect day.
+          </p>
+          <a href="#" class="btn-gold inline-block px-8 py-4 text-[13px] uppercase tracking-widest font-semibold rounded-full">
+            View Bridal
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-slide" style="background:#0f0a00;">
+      <div class="absolute inset-0 ken-burns"
+        style="background: url('https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1600&q=80') center/cover no-repeat; opacity:0.4;"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+      <div class="relative h-full flex items-center max-w-screen-2xl mx-auto px-8 md:px-16">
+        <div class="hero-text max-w-2xl text-white">
+          <div class="inline-block border border-amber-600/50 px-4 py-1 text-[11px] tracking-[0.3em] uppercase text-amber-400 mb-6">
+            Offer · Limited Period
+          </div>
+          <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-light leading-none mb-6">
+            Zero Making<br /><em style="color:var(--gold-light)">Charges</em>
+          </h1>
+          <p class="text-lg text-white/70 max-w-lg leading-relaxed mb-10 font-light">
+            On select diamond jewellery this festive season. In-store and online. Limited pieces available.
+          </p>
+          <a href="#offers" class="btn-gold inline-block px-8 py-4 text-[13px] uppercase tracking-widest font-semibold rounded-full">
+            Grab Offer
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide Controls -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
+    <button onclick="prevSlide()" class="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white hover:border-amber-400 hover:text-amber-400 transition-all">
+      <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+    </button>
+    <div id="slide-dots" class="flex gap-2">
+      <button onclick="goToSlide(0)" class="slide-dot w-8 h-1 bg-amber-400 rounded-full transition-all"></button>
+      <button onclick="goToSlide(1)" class="slide-dot w-2 h-1 bg-white/40 rounded-full transition-all"></button>
+      <button onclick="goToSlide(2)" class="slide-dot w-2 h-1 bg-white/40 rounded-full transition-all"></button>
+    </div>
+    <button onclick="nextSlide()" class="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white hover:border-amber-400 hover:text-amber-400 transition-all">
+      <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+    </button>
+  </div>
+
+  <!-- Scroll Hint -->
+  <div class="absolute bottom-8 right-8 text-white/40 text-[10px] uppercase tracking-widest flex flex-col items-center gap-2">
+    <span>Scroll</span>
+    <span class="material-symbols-outlined text-[16px]" style="animation:bounce 2s infinite">keyboard_arrow_down</span>
+  </div>
+</section>
+
+<!-- ===== TRUST BADGES ===== -->
+<section class="bg-white border-b border-gray-100">
+  <div class="max-w-screen-2xl mx-auto px-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100">
+      <div class="flex flex-col items-center gap-2 py-6 px-4 text-center">
+        <span class="material-symbols-outlined text-[32px]" style="color:var(--gold)">verified</span>
+        <span class="font-semibold text-sm text-gray-800">BIS Hallmarked</span>
+        <span class="text-[11px] text-gray-400">100% Pure Certified Gold</span>
+      </div>
+      <div class="flex flex-col items-center gap-2 py-6 px-4 text-center">
+        <span class="material-symbols-outlined text-[32px]" style="color:var(--gold)">local_shipping</span>
+        <span class="font-semibold text-sm text-gray-800">Free Delivery</span>
+        <span class="text-[11px] text-gray-400">Insured Pan-India Shipping</span>
+      </div>
+      <div class="flex flex-col items-center gap-2 py-6 px-4 text-center">
+        <span class="material-symbols-outlined text-[32px]" style="color:var(--gold)">swap_horiz</span>
+        <span class="font-semibold text-sm text-gray-800">Easy Exchange</span>
+        <span class="text-[11px] text-gray-400">30-Day Hassle-Free Return</span>
+      </div>
+      <div class="flex flex-col items-center gap-2 py-6 px-4 text-center">
+        <span class="material-symbols-outlined text-[32px]" style="color:var(--gold)">support_agent</span>
+        <span class="font-semibold text-sm text-gray-800">Expert Support</span>
+        <span class="text-[11px] text-gray-400">Mon–Sat 9AM–8PM</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COLLECTIONS GRID ===== -->
+<section id="collections" class="py-20 bg-white">
+  <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+    <div class="text-center mb-14">
+      <p class="text-[11px] uppercase tracking-[0.35em] text-amber-600 mb-3">The Curator's Choice</p>
+      <h2 class="font-display text-4xl md:text-5xl font-light section-title">Our Collections</h2>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+      <!-- Large Card: Rings -->
+      <div class="coll-card col-span-2 row-span-2 h-[480px] md:h-[560px] rounded-2xl">
+        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=900&q=80" alt="Gold & Diamond Rings" class="w-full h-full object-cover rounded-2xl" />
+        <div class="coll-overlay rounded-2xl"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
+          <p class="text-[10px] uppercase tracking-widest text-amber-300 mb-1">Bridal & Everyday</p>
+          <h3 class="font-display text-3xl font-light mb-4">Gold &amp; Diamond Rings</h3>
+          <a href="pages/gold-diamond-rings.html" class="coll-btn inline-block border border-white/60 text-white px-6 py-2.5 text-[11px] uppercase tracking-widest rounded-full hover:bg-white hover:text-amber-700 transition-all">
+            Explore
+          </a>
+        </div>
+      </div>
+
+      <!-- Chains -->
+      <div class="coll-card h-[264px] rounded-2xl">
+        <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&q=80" alt="Chains & Pendants" class="w-full h-full object-cover rounded-2xl" />
+        <div class="coll-overlay rounded-2xl"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
+          <h3 class="font-display text-xl font-light mb-2">Chains &amp; Pendants</h3>
+          <a href="pages/chains.html" class="coll-btn inline-block border border-white/60 text-white px-4 py-1.5 text-[10px] uppercase tracking-widest rounded-full hover:bg-white hover:text-amber-700 transition-all text-xs">
+            Shop Now
+          </a>
+        </div>
+      </div>
+
+      <!-- Earrings -->
+      <div class="coll-card h-[264px] rounded-2xl">
+        <img src="https://images.unsplash.com/photo-1573408301185-9519f94816f3?w=600&q=80" alt="Earrings & Studs" class="w-full h-full object-cover rounded-2xl" />
+        <div class="coll-overlay rounded-2xl"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
+          <h3 class="font-display text-xl font-light mb-2">Earrings &amp; Studs</h3>
+          <a href="pages/earrings-studs.html" class="coll-btn inline-block border border-white/60 text-white px-4 py-1.5 text-[10px] uppercase tracking-widest rounded-full hover:bg-white hover:text-amber-700 transition-all text-xs">
+            Shop Now
+          </a>
+        </div>
+      </div>
+
+      <!-- Men's -->
+      <div class="coll-card h-[264px] rounded-2xl">
+        <img src="https://images.unsplash.com/photo-1619994403073-2cec844b8e63?w=600&q=80" alt="Men's Jewellery" class="w-full h-full object-cover rounded-2xl" />
+        <div class="coll-overlay rounded-2xl"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
+          <h3 class="font-display text-xl font-light mb-2">Men's Jewellery</h3>
+          <a href="pages/mens-jewellery.html" class="coll-btn inline-block border border-white/60 text-white px-4 py-1.5 text-[10px] uppercase tracking-widest rounded-full hover:bg-white hover:text-amber-700 transition-all text-xs">
+            Shop Now
+          </a>
+        </div>
+      </div>
+
+      <!-- Bridal -->
+      <div class="coll-card h-[264px] rounded-2xl">
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&q=80" alt="Bridal Sets" class="w-full h-full object-cover rounded-2xl" />
+        <div class="coll-overlay rounded-2xl"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
+          <h3 class="font-display text-xl font-light mb-2">Bridal Trousseau</h3>
+          <a href="#" class="coll-btn inline-block border border-white/60 text-white px-4 py-1.5 text-[10px] uppercase tracking-widest rounded-full hover:bg-white hover:text-amber-700 transition-all text-xs">
+            Shop Now
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== 360° PRODUCT VIEWER ===== -->
+<section id="360-viewer" class="py-20 bg-[#fdf9f3]">
+  <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+    <div class="flex flex-col lg:flex-row items-center gap-16">
+
+      <div class="w-full lg:w-1/2">
+        <p class="text-[11px] uppercase tracking-[0.35em] text-amber-600 mb-3">Interactive</p>
+        <h2 class="font-display text-4xl md:text-5xl font-light mb-6">360° Product View</h2>
+        <p class="text-gray-500 leading-relaxed mb-8 max-w-md">
+          Drag to rotate and explore every facet of our signature pieces. Experience craftsmanship from every angle before you buy.
+        </p>
+        <div class="flex items-center gap-6 mb-8">
+          <button id="view-ring" onclick="change360Product('ring')" class="px-5 py-2 text-[12px] uppercase tracking-widest border-2 border-amber-600 text-amber-700 font-semibold rounded-full transition-all active-view-btn">Ring</button>
+          <button id="view-bangle" onclick="change360Product('bangle')" class="px-5 py-2 text-[12px] uppercase tracking-widest border border-gray-200 text-gray-500 rounded-full transition-all hover:border-amber-400 hover:text-amber-600">Bangle</button>
+          <button id="view-pendant" onclick="change360Product('pendant')" class="px-5 py-2 text-[12px] uppercase tracking-widest border border-gray-200 text-gray-500 rounded-full transition-all hover:border-amber-400 hover:text-amber-600">Pendant</button>
+        </div>
+        <div class="p-6 bg-white rounded-2xl shadow-md space-y-3" id="product-360-info">
+          <h3 class="font-display text-2xl">The Maharani Solitaire Ring</h3>
+          <p class="text-gray-500 text-sm">22K BIS Hallmarked Gold · 4g · Diamond F-SI</p>
+          <p class="text-2xl font-bold" style="color:var(--gold)">₹ 1,42,500</p>
+          <button onclick="openQuickView('Maharani Solitaire Ring','₹ 1,42,500')" class="btn-gold w-full py-3 rounded-full text-[13px] uppercase tracking-wider font-semibold mt-2">
+            Enquire Now
+          </button>
+        </div>
+      </div>
+
+      <!-- 360 Canvas -->
+      <div class="w-full lg:w-1/2 flex flex-col items-center">
+        <div class="relative w-full max-w-[420px]">
+          <div class="viewer-360 w-full h-[380px] bg-white rounded-3xl shadow-2xl flex items-center justify-center overflow-hidden select-none"
+            id="viewer360"
+            onmousedown="startDrag360(event)"
+            ontouchstart="startTouch360(event)">
+            <img id="img360" src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80"
+              alt="360 View"
+              class="w-full h-full object-cover transition-none pointer-events-none"
+              style="transform-origin:center; transform:perspective(800px) rotateY(0deg);" />
+            <!-- Gradient overlay -->
+            <div class="absolute inset-0 rounded-3xl" style="background: radial-gradient(ellipse at center, transparent 60%, rgba(253,249,243,0.8) 100%);"></div>
+            <!-- Center hint -->
+            <div id="drag-hint" class="absolute inset-0 flex flex-col items-center justify-end pb-8 pointer-events-none">
+              <div class="flex items-center gap-2 bg-black/50 backdrop-blur text-white px-4 py-2 rounded-full text-[11px] tracking-widest rotate-hint">
+                <span class="material-symbols-outlined text-[16px]">360</span> Drag to Rotate
+              </div>
+            </div>
+          </div>
+
+          <!-- Frame controls -->
+          <div class="flex items-center justify-center gap-4 mt-5">
+            <button onclick="rotate360(-15)" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:border-amber-400 transition-all">
+              <span class="material-symbols-outlined text-[20px] text-gray-500">rotate_left</span>
+            </button>
+            <div class="text-[11px] text-gray-400 uppercase tracking-widest">Rotate</div>
+            <button onclick="rotate360(15)" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:border-amber-400 transition-all">
+              <span class="material-symbols-outlined text-[20px] text-gray-500">rotate_right</span>
+            </button>
+          </div>
+
+          <!-- Thumbnail frames -->
+          <div class="flex items-center justify-center gap-2 mt-4">
+            <div onclick="setFrame360(0)" class="w-12 h-12 rounded-lg overflow-hidden border-2 border-amber-400 cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=100&q=60" class="w-full h-full object-cover" />
+            </div>
+            <div onclick="setFrame360(45)" class="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 cursor-pointer hover:border-amber-300 transition-all">
+              <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=100&q=60" class="w-full h-full object-cover" />
+            </div>
+            <div onclick="setFrame360(90)" class="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 cursor-pointer hover:border-amber-300 transition-all">
+              <img src="https://images.unsplash.com/photo-1543294001-f7cd5d7fb516?w=100&q=60" class="w-full h-full object-cover" />
+            </div>
+            <div onclick="setFrame360(135)" class="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 cursor-pointer hover:border-amber-300 transition-all">
+              <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=100&q=60" class="w-full h-full object-cover" />
+            </div>
+            <div onclick="setFrame360(180)" class="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 cursor-pointer hover:border-amber-300 transition-all">
+              <img src="https://images.unsplash.com/photo-1573408301185-9519f94816f3?w=100&q=60" class="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BESTSELLERS CAROUSEL ===== -->
+<section class="py-20 bg-white">
+  <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+    <div class="flex items-end justify-between mb-12">
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.35em] text-amber-600 mb-3">Most Loved</p>
+        <h2 class="font-display text-4xl md:text-5xl font-light">Bestsellers</h2>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="prev-best" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:border-amber-400 transition-all" onclick="scrollBest(-1)">
+          <span class="material-symbols-outlined text-gray-500 text-[20px]">chevron_left</span>
+        </button>
+        <button id="next-best" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:border-amber-400 transition-all" onclick="scrollBest(1)">
+          <span class="material-symbols-outlined text-gray-500 text-[20px]">chevron_right</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="flex gap-2 mb-8 overflow-x-auto pb-2">
+      <button onclick="filterProducts('all', this)" class="filter-tab px-5 py-2 rounded-full text-[12px] uppercase tracking-widest font-semibold bg-amber-600 text-white transition-all">All</button>
+      <button onclick="filterProducts('rings', this)" class="filter-tab px-5 py-2 rounded-full text-[12px] uppercase tracking-widest font-semibold border border-gray-200 text-gray-500 hover:border-amber-400 hover:text-amber-600 transition-all">Rings</button>
+      <button onclick="filterProducts('chains', this)" class="filter-tab px-5 py-2 rounded-full text-[12px] uppercase tracking-widest font-semibold border border-gray-200 text-gray-500 hover:border-amber-400 hover:text-amber-600 transition-all">Chains</button>
+      <button onclick="filterProducts('earrings', this)" class="filter-tab px-5 py-2 rounded-full text-[12px] uppercase tracking-widest font-semibold border border-gray-200 text-gray-500 hover:border-amber-400 hover:text-amber-600 transition-all">Earrings</button>
+      <button onclick="filterProducts('bangles', this)" class="filter-tab px-5 py-2 rounded-full text-[12px] uppercase tracking-widest font-semibold border border-gray-200 text-gray-500 hover:border-amber-400 hover:text-amber-600 transition-all">Bangles</button>
+    </div>
+
+    <div id="best-container" class="overflow-hidden">
+      <div id="best-track" class="flex gap-6 transition-transform duration-500">
+
+        <!-- Product 1 -->
+        <div class="prod-card flex-none w-[260px] md:w-[300px]" data-cat="rings">
+          <div class="prod-img-wrap h-[320px] rounded-2xl mb-4 relative">
+            <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80" alt="Mayura Solitaire" class="h-full rounded-2xl" />
+            <div class="wishlist-btn" onclick="toggleWish(this)"><span class="material-symbols-outlined">favorite</span></div>
+            <div class="quick-view-btn rounded-b-2xl" onclick="openQuickView('Mayura Solitaire Ring','₹ 42,500')">Quick View</div>
+            <div class="absolute top-3 left-3 gold-badge px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold">Bestseller</div>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest text-amber-600 mb-1">Gold & Diamond Rings</p>
+          <h4 class="font-display text-lg text-gray-800 mb-1">The Mayura Pendant</h4>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="flex text-amber-400 text-xs">★★★★★</div>
+            <span class="text-[11px] text-gray-400">(124)</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-lg" style="color:var(--gold)">₹ 42,500</span>
+            <button onclick="openQuickView('Mayura Pendant','₹ 42,500')" class="btn-gold px-4 py-2 text-[11px] uppercase tracking-wider rounded-full">Enquire</button>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="prod-card flex-none w-[260px] md:w-[300px]" data-cat="bangles">
+          <div class="prod-img-wrap h-[320px] rounded-2xl mb-4 relative">
+            <img src="https://images.unsplash.com/photo-1543294001-f7cd5d7fb516?w=400&q=80" alt="Aura Bangles" class="h-full rounded-2xl" />
+            <div class="wishlist-btn" onclick="toggleWish(this)"><span class="material-symbols-outlined">favorite</span></div>
+            <div class="quick-view-btn rounded-b-2xl" onclick="openQuickView('Modern Aura Bangles','₹ 1,28,000')">Quick View</div>
+            <div class="absolute top-3 left-3 bg-rose-500 text-white px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold">New</div>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest text-amber-600 mb-1">Bangles</p>
+          <h4 class="font-display text-lg text-gray-800 mb-1">Modern Aura Bangles</h4>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="flex text-amber-400 text-xs">★★★★★</div>
+            <span class="text-[11px] text-gray-400">(89)</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-lg" style="color:var(--gold)">₹ 1,28,000</span>
+            <button onclick="openQuickView('Modern Aura Bangles','₹ 1,28,000')" class="btn-gold px-4 py-2 text-[11px] uppercase tracking-wider rounded-full">Enquire</button>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="prod-card flex-none w-[260px] md:w-[300px]" data-cat="chains">
+          <div class="prod-img-wrap h-[320px] rounded-2xl mb-4 relative">
+            <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&q=80" alt="Temple Haar" class="h-full rounded-2xl" />
+            <div class="wishlist-btn" onclick="toggleWish(this)"><span class="material-symbols-outlined">favorite</span></div>
+            <div class="quick-view-btn rounded-b-2xl" onclick="openQuickView('Goddess Temple Haar','₹ 3,45,000')">Quick View</div>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest text-amber-600 mb-1">Chains & Pendants</p>
+          <h4 class="font-display text-lg text-gray-800 mb-1">Goddess Temple Haar</h4>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="flex text-amber-400 text-xs">★★★★☆</div>
+            <span class="text-[11px] text-gray-400">(56)</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-lg" style="color:var(--gold)">₹ 3,45,000</span>
+            <button onclick="openQuickView('Goddess Temple Haar','₹ 3,45,000')" class="btn-gold px-4 py-2 text-[11px] uppercase tracking-wider rounded-full">Enquire</button>
+          </div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="prod-card flex-none w-[260px] md:w-[300px]" data-cat="earrings">
+          <div class="prod-img-wrap h-[320px] rounded-2xl mb-4 relative">
+            <img src="https://images.unsplash.com/photo-1573408301185-9519f94816f3?w=400&q=80" alt="Diamond Studs" class="h-full rounded-2xl" />
+            <div class="wishlist-btn" onclick="toggleWish(this)"><span class="material-symbols-outlined">favorite</span></div>
+            <div class="quick-view-btn rounded-b-2xl" onclick="openQuickView('Celeste Diamond Studs','₹ 85,900')">Quick View</div>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest text-amber-600 mb-1">Earrings & Studs</p>
+          <h4 class="font-display text-lg text-gray-800 mb-1">Celeste Diamond Studs</h4>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="flex text-amber-400 text-xs">★★★★★</div>
+            <span class="text-[11px] text-gray-400">(203)</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-lg" style="color:var(--gold)">₹ 85,900</span>
+            <button onclick="openQuickView('Celeste Diamond Studs','₹ 85,900')" class="btn-gold px-4 py-2 text-[11px] uppercase tracking-wider rounded-full">Enquire</button>
+          </div>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="prod-card flex-none w-[260px] md:w-[300px]" data-cat="rings">
+          <div class="prod-img-wrap h-[320px] rounded-2xl mb-4 relative">
+            <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=400&q=80" alt="Emerald Halo" class="h-full rounded-2xl" />
+            <div class="wishlist-btn" onclick="toggleWish(this)"><span class="material-symbols-outlined">favorite</span></div>
+            <div class="quick-view-btn rounded-b-2xl" onclick="openQuickView('Emerald Halo Ring','₹ 1,85,000')">Quick View</div>
+            <div class="absolute top-3 left-3 bg-green-600 text-white px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold">Trending</div>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest text-amber-600 mb-1">Gold & Diamond Rings</p>
+          <h4 class="font-display text-lg text-gray-800 mb-1">Emerald Halo Ring</h4>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="flex text-amber-400 text-xs">★★★★★</div>
+            <span class="text-[11px] text-gray-400">(77)</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-lg" style="color:var(--gold)">₹ 1,85,000</span>
+            <button onclick="openQuickView('Emerald Halo Ring','₹ 1,85,000')" class="btn-gold px-4 py-2 text-[11px] uppercase tracking-wider rounded-full">Enquire</button>
+          </div>
+        </div>
+
+        <!-- Product 6 -->
+        <div class="prod-card flex-none w-[260px] md:w-[300px]" data-cat="chains">
+          <div class="prod-img-wrap h-[320px] rounded-2xl mb-4 relative">
+            <img src="https://images.unsplash.com/photo-1589674781759-c21c37956a44?w=400&q=80" alt="Classic Curb Chain" class="h-full rounded-2xl" />
+            <div class="wishlist-btn" onclick="toggleWish(this)"><span class="material-symbols-outlined">favorite</span></div>
+            <div class="quick-view-btn rounded-b-2xl" onclick="openQuickView('Classic Curb Chain','₹ 1,45,200')">Quick View</div>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest text-amber-600 mb-1">Chains & Pendants</p>
+          <h4 class="font-display text-lg text-gray-800 mb-1">Classic Curb Chain</h4>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="flex text-amber-400 text-xs">★★★★☆</div>
+            <span class="text-[11px] text-gray-400">(41)</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-lg" style="color:var(--gold)">₹ 1,45,200</span>
+            <button onclick="openQuickView('Classic Curb Chain','₹ 1,45,200')" class="btn-gold px-4 py-2 text-[11px] uppercase tracking-wider rounded-full">Enquire</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== OFFERS BANNER ===== -->
+<section id="offers" class="py-20 bg-[#0d0d0d]">
+  <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+    <div class="text-center mb-14">
+      <p class="text-[11px] uppercase tracking-[0.35em] text-amber-400 mb-3">Limited Time</p>
+      <h2 class="font-display text-4xl md:text-5xl font-light text-white">Exclusive Offers</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <div class="offer-card bg-gradient-to-br from-amber-900/40 to-amber-800/20 border border-amber-700/30 rounded-2xl p-8 text-white text-center">
+        <div class="text-5xl mb-4">🏅</div>
+        <h3 class="font-display text-2xl mb-2">Zero Making Charges</h3>
+        <p class="text-white/60 text-sm mb-4">On all diamond jewellery above ₹75,000</p>
+        <div class="border border-amber-400/40 rounded-full px-4 py-1 text-[11px] tracking-widest text-amber-400 inline-block mb-6">Valid till 30 Apr 2025</div>
+        <button class="btn-gold w-full py-3 rounded-full text-[12px] uppercase tracking-widest font-semibold">Shop Now</button>
+      </div>
+
+      <div class="offer-card bg-gradient-to-br from-rose-900/40 to-rose-800/20 border border-rose-700/30 rounded-2xl p-8 text-white text-center">
+        <div class="text-5xl mb-4">💍</div>
+        <h3 class="font-display text-2xl mb-2">Bridal Exchange</h3>
+        <p class="text-white/60 text-sm mb-4">Exchange your old gold at best value + 5% extra on bridal sets</p>
+        <div class="border border-rose-400/40 rounded-full px-4 py-1 text-[11px] tracking-widest text-rose-400 inline-block mb-6">Valid till 15 May 2025</div>
+        <button class="bg-rose-600 hover:bg-rose-700 text-white w-full py-3 rounded-full text-[12px] uppercase tracking-widest font-semibold transition-all">Learn More</button>
+      </div>
+
+      <div class="offer-card bg-gradient-to-br from-blue-900/40 to-blue-800/20 border border-blue-700/30 rounded-2xl p-8 text-white text-center">
+        <div class="text-5xl mb-4">🎁</div>
+        <h3 class="font-display text-2xl mb-2">Gift Card</h3>
+        <p class="text-white/60 text-sm mb-4">Gift your loved ones a Bharathi Jewellers voucher — ₹5,000 to ₹5,00,000</p>
+        <div class="border border-blue-400/40 rounded-full px-4 py-1 text-[11px] tracking-widest text-blue-300 inline-block mb-6">No Expiry</div>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white w-full py-3 rounded-full text-[12px] uppercase tracking-widest font-semibold transition-all">Buy Gift Card</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY US ===== -->
+<section id="about" class="py-20 bg-white">
+  <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.35em] text-amber-600 mb-3">Our Legacy</p>
+        <h2 class="font-display text-4xl md:text-5xl font-light mb-6">40 Years of Trust &amp;<br /><em>Craftsmanship</em></h2>
+        <p class="text-gray-500 leading-relaxed mb-6">Founded in 1985 in the heart of Coimbatore, Bharathi Jewellers has been the trusted companion of Tamil families through their most precious moments — from first gold to wedding trousseau to anniversary gifts.</p>
+        <p class="text-gray-500 leading-relaxed mb-10">Every piece in our collection is BIS Hallmarked, crafted by master artisans who have inherited the age-old traditions of Kanchipuram and Trichy goldsmithing, reimagined for the modern wearer.</p>
+
+        <div class="grid grid-cols-2 gap-6 mb-10">
+          <div class="text-center p-6 bg-amber-50 rounded-2xl">
+            <div class="font-display text-4xl font-bold" style="color:var(--gold)">40+</div>
+            <div class="text-sm text-gray-500 mt-1">Years of Excellence</div>
+          </div>
+          <div class="text-center p-6 bg-amber-50 rounded-2xl">
+            <div class="font-display text-4xl font-bold" style="color:var(--gold)">50K+</div>
+            <div class="text-sm text-gray-500 mt-1">Happy Families</div>
+          </div>
+          <div class="text-center p-6 bg-amber-50 rounded-2xl">
+            <div class="font-display text-4xl font-bold" style="color:var(--gold)">5000+</div>
+            <div class="text-sm text-gray-500 mt-1">Unique Designs</div>
+          </div>
+          <div class="text-center p-6 bg-amber-50 rounded-2xl">
+            <div class="font-display text-4xl font-bold" style="color:var(--gold)">3</div>
+            <div class="text-sm text-gray-500 mt-1">Showrooms</div>
+          </div>
+        </div>
+
+        <a href="#contact" class="btn-gold inline-block px-8 py-4 rounded-full text-[13px] uppercase tracking-wider font-semibold">
+          Visit Our Store
+        </a>
+      </div>
+      <div class="relative">
+        <img src="https://images.unsplash.com/photo-1571266028261-a56b9e90e12e?w=800&q=80" alt="Our Atelier" class="w-full h-[500px] object-cover rounded-3xl" />
+        <div class="absolute -bottom-8 -left-8 bg-white shadow-xl rounded-2xl p-6 max-w-[200px]">
+          <div class="font-display text-3xl font-bold mb-1" style="color:var(--gold)">Est.</div>
+          <div class="font-display text-5xl font-bold text-gray-800">1985</div>
+          <div class="text-[11px] text-gray-400 mt-1 uppercase tracking-wider">Coimbatore, TN</div>
+        </div>
+        <div class="absolute -top-4 -right-4 gold-badge w-20 h-20 rounded-full flex flex-col items-center justify-center text-center shadow-lg">
+          <span class="font-display text-lg font-bold leading-none">BIS</span>
+          <span class="text-[9px] tracking-wider mt-0.5">Hallmarked</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="py-20 bg-[#fdf9f3]">
+  <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+    <div class="text-center mb-14">
+      <p class="text-[11px] uppercase tracking-[0.35em] text-amber-600 mb-3">Stories of Joy</p>
+      <h2 class="font-display text-4xl md:text-5xl font-light section-title">What Our Customers Say</h2>
+    </div>
+
+    <div class="overflow-hidden" id="test-container">
+      <div id="test-track" class="testimonial-track gap-6">
+
+        <div class="flex-none w-full md:w-[380px] bg-white rounded-2xl p-8 shadow-md border border-gray-50">
+          <div class="flex text-amber-400 text-lg mb-4">★★★★★</div>
+          <p class="font-display italic text-gray-700 text-lg leading-relaxed mb-6">"The craftsmanship on my wedding necklace was beyond expectation. Bharathi Jewellers truly understands the value of heritage in every cut and curve."</p>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center font-display text-xl font-bold" style="color:var(--gold)">P</div>
+            <div>
+              <p class="font-semibold text-gray-800">Priyanka Sharma</p>
+              <p class="text-[11px] text-gray-400">Bangalore · Verified Purchase</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-none w-full md:w-[380px] bg-white rounded-2xl p-8 shadow-md border border-gray-50">
+          <div class="flex text-amber-400 text-lg mb-4">★★★★★</div>
+          <p class="font-display italic text-gray-700 text-lg leading-relaxed mb-6">"I've been a customer since 1990. The trust they have built over the decades is as pure as their 24K gold. Highly recommended for bespoke work."</p>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center font-display text-xl font-bold" style="color:var(--gold)">R</div>
+            <div>
+              <p class="font-semibold text-gray-800">Rajesh Varma</p>
+              <p class="text-[11px] text-gray-400">Coimbatore · Verified Purchase</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-none w-full md:w-[380px] bg-white rounded-2xl p-8 shadow-md border border-gray-50">
+          <div class="flex text-amber-400 text-lg mb-4">★★★★★</div>
+          <p class="font-display italic text-gray-700 text-lg leading-relaxed mb-6">"A beautiful blend of traditional aesthetics and modern service. Their bridal set was everything I dreamed of. The team was incredibly helpful!"</p>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center font-display text-xl font-bold" style="color:var(--gold)">A</div>
+            <div>
+              <p class="font-semibold text-gray-800">Ananya Iyer</p>
+              <p class="text-[11px] text-gray-400">Hyderabad · Verified Purchase</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-none w-full md:w-[380px] bg-white rounded-2xl p-8 shadow-md border border-gray-50">
+          <div class="flex text-amber-400 text-lg mb-4">★★★★★</div>
+          <p class="font-display italic text-gray-700 text-lg leading-relaxed mb-6">"Purchased a gold chain for my son's naming ceremony. The quality exceeded expectations and the in-store experience was warm and personal."</p>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center font-display text-xl font-bold" style="color:var(--gold)">M</div>
+            <div>
+              <p class="font-semibold text-gray-800">Meenakshi Rajan</p>
+              <p class="text-[11px] text-gray-400">Chennai · Verified Purchase</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Dots -->
+    <div class="flex justify-center gap-2 mt-8" id="test-dots">
+      <button onclick="goToTest(0)" class="test-dot w-6 h-1.5 bg-amber-500 rounded-full transition-all"></button>
+      <button onclick="goToTest(1)" class="test-dot w-2 h-1.5 bg-gray-300 rounded-full transition-all"></button>
+      <button onclick="goToTest(2)" class="test-dot w-2 h-1.5 bg-gray-300 rounded-full transition-all"></button>
+      <button onclick="goToTest(3)" class="test-dot w-2 h-1.5 bg-gray-300 rounded-full transition-all"></button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INSTAGRAM GRID ===== -->
+<section class="py-20 bg-white">
+  <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+    <div class="text-center mb-10">
+      <p class="text-[11px] uppercase tracking-[0.35em] text-amber-600 mb-3">Follow Us</p>
+      <h2 class="font-display text-3xl md:text-4xl font-light">@bharathijewellers</h2>
+    </div>
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
+      <div class="group relative overflow-hidden rounded-xl aspect-square">
+        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300&q=70" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Insta" />
+        <div class="absolute inset-0 bg-amber-700/0 group-hover:bg-amber-700/30 transition-all flex items-center justify-center">
+          <span class="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 transition-opacity text-3xl">photo_camera</span>
+        </div>
+      </div>
+      <div class="group relative overflow-hidden rounded-xl aspect-square">
+        <img src="https://images.unsplash.com/photo-1543294001-f7cd5d7fb516?w=300&q=70" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Insta" />
+        <div class="absolute inset-0 bg-amber-700/0 group-hover:bg-amber-700/30 transition-all flex items-center justify-center">
+          <span class="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 transition-opacity text-3xl">photo_camera</span>
+        </div>
+      </div>
+      <div class="group relative overflow-hidden rounded-xl aspect-square">
+        <img src="https://images.unsplash.com/photo-1573408301185-9519f94816f3?w=300&q=70" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Insta" />
+        <div class="absolute inset-0 bg-amber-700/0 group-hover:bg-amber-700/30 transition-all flex items-center justify-center">
+          <span class="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 transition-opacity text-3xl">photo_camera</span>
+        </div>
+      </div>
+      <div class="group relative overflow-hidden rounded-xl aspect-square">
+        <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=300&q=70" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Insta" />
+        <div class="absolute inset-0 bg-amber-700/0 group-hover:bg-amber-700/30 transition-all flex items-center justify-center">
+          <span class="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 transition-opacity text-3xl">photo_camera</span>
+        </div>
+      </div>
+      <div class="group relative overflow-hidden rounded-xl aspect-square">
+        <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=300&q=70" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Insta" />
+        <div class="absolute inset-0 bg-amber-700/0 group-hover:bg-amber-700/30 transition-all flex items-center justify-center">
+          <span class="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 transition-opacity text-3xl">photo_camera</span>
+        </div>
+      </div>
+      <div class="group relative overflow-hidden rounded-xl aspect-square">
+        <img src="https://images.unsplash.com/photo-1589674781759-c21c37956a44?w=300&q=70" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Insta" />
+        <div class="absolute inset-0 bg-amber-700/0 group-hover:bg-amber-700/30 transition-all flex items-center justify-center">
+          <span class="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 transition-opacity text-3xl">photo_camera</span>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-8">
+      <a href="https://instagram.com" target="_blank" class="inline-flex items-center gap-2 border border-gray-200 rounded-full px-8 py-3 text-[12px] uppercase tracking-widest text-gray-600 hover:border-amber-400 hover:text-amber-700 transition-all">
+        <span class="material-symbols-outlined text-[18px]">photo_camera</span> Follow on Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT & MAP ===== -->
+<section id="contact" class="py-20 bg-[#fdf9f3]">
+  <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.35em] text-amber-600 mb-3">Find Us</p>
+        <h2 class="font-display text-4xl md:text-5xl font-light mb-8">Visit Our<br /><em>Showroom</em></h2>
+
+        <div class="space-y-6 mb-10">
+          <div class="flex gap-4 items-start">
+            <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-[20px]" style="color:var(--gold)">location_on</span>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-1">Flagship Store</h4>
+              <p class="text-gray-500 text-sm leading-relaxed">44/A, Oppanakara Street,<br />Coimbatore – 641 001, Tamil Nadu</p>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-[20px]" style="color:var(--gold)">schedule</span>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-1">Store Hours</h4>
+              <p class="text-gray-500 text-sm">Mon – Sat: 10:00 AM – 8:30 PM<br />Sunday: 11:00 AM – 6:00 PM</p>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-[20px]" style="color:var(--gold)">call</span>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-1">Call Us</h4>
+              <p class="text-gray-500 text-sm">+91 96005 45678<br />+91 0422 234 5678</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enquiry Form -->
+        <div class="bg-white rounded-2xl p-8 shadow-md">
+          <h3 class="font-display text-2xl mb-6">Send an Enquiry</h3>
+          <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <input type="text" placeholder="Your Name" class="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-amber-400 w-full" />
+              <input type="tel" placeholder="Phone Number" class="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-amber-400 w-full" />
+            </div>
+            <input type="email" placeholder="Email Address" class="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-amber-400 w-full" />
+            <textarea placeholder="Tell us what you're looking for..." rows="3" class="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-amber-400 w-full resize-none"></textarea>
+            <button class="btn-gold w-full py-3.5 rounded-xl text-[13px] uppercase tracking-widest font-semibold">
+              Send Enquiry
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="space-y-6">
+        <div class="rounded-3xl overflow-hidden h-[400px] shadow-xl">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.265!2d76.9558269!3d11.0168445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba859af2f971cb5%3A0x2fc1c81e183ed282!2sOppanakara%20St%2C%20Coimbatore!5e0!3m2!1sen!2sin!4v1700000000000"
+            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" title="Bharathi Jewellers Location"></iframe>
+        </div>
+
+        <a href="https://wa.me/919600545678?text=Hi%2C%20I%27d%20like%20to%20enquire%20about%20your%20jewellery." target="_blank"
+          class="flex items-center justify-center gap-3 bg-green-500 hover:bg-green-600 text-white py-4 rounded-2xl font-semibold text-sm transition-all shadow-md">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.511.895 2.994 1.348 4.704 1.349 5.178 0 9.389-4.211 9.392-9.39 0-2.515-.979-4.88-2.757-6.658s-4.144-2.757-6.66-2.757c-5.179 0-9.39 4.211-9.392 9.39 0 1.81.512 3.236 1.488 4.747l-.999 3.648 3.724-.977zm11.387-5.464c-.34-.17-2.012-.993-2.324-1.106-.313-.114-.541-.17-.768.17-.227.34-.879 1.106-1.078 1.333-.199.227-.398.256-.738.085-.34-.17-1.437-.529-2.737-1.688-1.011-.902-1.693-2.016-1.892-2.357-.199-.34-.021-.524.149-.693.153-.152.34-.398.511-.597.17-.199.227-.34.341-.569.114-.227.057-.426-.028-.597-.085-.17-.768-1.851-1.05-2.532-.275-.662-.553-.573-.768-.584l-.653-.011c-.227 0-.597.085-.909.426-.313.341-1.193 1.165-1.193 2.842 0 1.677 1.222 3.297 1.393 3.524.17.227 2.404 3.672 5.823 5.145.813.35 1.448.56 1.943.717.817.259 1.561.222 2.149.135.656-.097 2.012-.823 2.296-1.619.284-.796.284-1.478.199-1.619-.085-.141-.313-.227-.653-.398z"/></svg>
+          Chat on WhatsApp for Instant Help
+        </a>
+
+        <!-- EMI Banner -->
+        <div class="bg-gradient-to-r from-amber-800 to-amber-900 rounded-2xl p-6 text-white">
+          <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-[40px] text-amber-300">account_balance</span>
+            <div>
+              <h4 class="font-display text-xl mb-1">Easy EMI Available</h4>
+              <p class="text-white/70 text-sm">0% interest EMI on purchases above ₹25,000 with leading banks</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="bg-[#0d0d0d] text-white pt-20 pb-8">
+  <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+
+      <div>
+        <div class="flex items-center gap-3 mb-6">
+          <img src="assets/logo.png" alt="Bharathi Jewellers" class="h-12 w-12 object-contain rounded-full"
+            onerror="this.style.display='none'" />
+          <div>
+            <div class="font-display text-xl" style="color:var(--gold-light)">Bharathi Jewellers</div>
+            <div class="font-tamil text-[10px] text-gray-500 mt-0.5">Pure Gold · Pure Trust</div>
+          </div>
+        </div>
+        <p class="text-gray-500 text-sm leading-relaxed mb-6">Crafting legacies in gold and diamond since 1985. Every piece tells a story of heritage, trust, and timeless elegance.</p>
+        <div class="flex gap-3">
+          <a href="#" class="w-9 h-9 rounded-full border border-gray-700 flex items-center justify-center hover:border-amber-500 hover:text-amber-500 transition-all text-gray-500">
+            <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-gray-700 flex items-center justify-center hover:border-amber-500 hover:text-amber-500 transition-all text-gray-500">
+            <span class="material-symbols-outlined text-[18px]">facebook</span>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-gray-700 flex items-center justify-center hover:border-amber-500 hover:text-amber-500 transition-all text-gray-500">
+            <span class="material-symbols-outlined text-[18px]">play_circle</span>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5 class="text-[11px] uppercase tracking-widest text-gray-400 mb-6 font-semibold">Collections</h5>
+        <ul class="space-y-3">
+          <li><a href="pages/gold-diamond-rings.html" class="text-gray-500 hover:text-amber-400 transition-colors text-sm">Gold &amp; Diamond Rings</a></li>
+          <li><a href="pages/chains.html" class="text-gray-500 hover:text-amber-400 transition-colors text-sm">Chains &amp; Pendants</a></li>
+          <li><a href="pages/earrings-studs.html" class="text-gray-500 hover:text-amber-400 transition-colors text-sm">Earrings &amp; Studs</a></li>
+          <li><a href="pages/mens-jewellery.html" class="text-gray-500 hover:text-amber-400 transition-colors text-sm">Men's Jewellery</a></li>
+          <li><a href="#" class="text-gray-500 hover:text-amber-400 transition-colors text-sm">Bridal Trousseau</a></li>
+          <li><a href="#" class="text-gray-500 hover:text-amber-400 transition-colors text-sm">Bangles &amp; Kadas</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-[11px] uppercase tracking-widest text-gray-400 mb-6 font-semibold">Services</h5>
+        <ul class="space-y-3">
+          <li><a href="#" class="text-gray-500 hover:text-amber-400 transition-colors text-sm">Bespoke Design</a></li>
+          <li><a href="#" class="text-gray-500 hover:text-amber-400 transition-colors text-sm">Old Gold Exchange</a></li>
+          <li><a href="#" class="text-gray-500 hover:text-amber-400 transition-colors text-sm">Jewellery Valuation</a></li>
+          <li><a href="#" class="text-gray-500 hover:text-amber-400 transition-colors text-sm">Repair &amp; Polishing</a></li>
+          <li><a href="#" class="text-gray-500 hover:text-amber-400 transition-colors text-sm">Care Guide</a></li>
+          <li><a href="#" class="text-gray-500 hover:text-amber-400 transition-colors text-sm">Book Appointment</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-[11px] uppercase tracking-widest text-gray-400 mb-6 font-semibold">Newsletter</h5>
+        <p class="text-gray-500 text-sm mb-4">Be the first to know about new arrivals, offers, and exclusive collections.</p>
+        <div class="flex border border-gray-700 rounded-full overflow-hidden">
+          <input type="email" placeholder="Your email" class="bg-transparent border-none flex-1 px-4 text-sm text-white placeholder-gray-600 focus:outline-none" />
+          <button class="btn-gold px-4 py-2.5 text-[11px] uppercase tracking-wider rounded-full m-1">Subscribe</button>
+        </div>
+        <div class="mt-6 space-y-2">
+          <div class="flex items-center gap-2 text-gray-500 text-[12px]">
+            <span class="material-symbols-outlined text-[16px] text-amber-500">verified</span> BIS Certified Jewellery
+          </div>
+          <div class="flex items-center gap-2 text-gray-500 text-[12px]">
+            <span class="material-symbols-outlined text-[16px] text-amber-500">security</span> Secure Payments
+          </div>
+          <div class="flex items-center gap-2 text-gray-500 text-[12px]">
+            <span class="material-symbols-outlined text-[16px] text-amber-500">local_shipping</span> Free Insured Delivery
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-gray-600 uppercase tracking-widest">
+      <div>© 2025 Bharathi Jewellers. All Rights Reserved.</div>
+      <div class="flex gap-6">
+        <a href="#" class="hover:text-amber-400 transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-amber-400 transition-colors">Terms of Use</a>
+        <a href="#" class="hover:text-amber-400 transition-colors">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== QUICK VIEW MODAL ===== -->
+<div id="product-modal" class="fixed inset-0 z-[70] flex items-center justify-center p-4" style="background:rgba(0,0,0,0.7);">
+  <div class="bg-white rounded-3xl max-w-lg w-full p-8 relative shadow-2xl" onclick="event.stopPropagation()">
+    <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800">
+      <span class="material-symbols-outlined text-[28px]">close</span>
+    </button>
+    <div class="flex gap-6 items-start">
+      <div class="w-40 h-40 rounded-2xl overflow-hidden flex-shrink-0 bg-gray-100">
+        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300&q=80" class="w-full h-full object-cover" id="modal-img" alt="Product" />
+      </div>
+      <div class="flex-1">
+        <p class="text-[10px] uppercase tracking-widest text-amber-600 mb-2">Enquire This Piece</p>
+        <h3 id="modal-name" class="font-display text-2xl text-gray-800 mb-2">Product Name</h3>
+        <p id="modal-price" class="text-xl font-bold mb-4" style="color:var(--gold)">₹ 0</p>
+        <div class="space-y-3">
+          <input type="text" placeholder="Your Name" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm" />
+          <input type="tel" placeholder="Phone Number" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm" />
+          <button onclick="submitEnquiry()" class="btn-gold w-full py-3 rounded-xl text-[12px] uppercase tracking-widest font-semibold">
+            Send Enquiry
+          </button>
+          <a id="modal-wa" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-green-500 text-white w-full py-3 rounded-xl text-[12px] uppercase tracking-widest font-semibold">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.511.895 2.994 1.348 4.704 1.349 5.178 0 9.389-4.211 9.392-9.39 0-2.515-.979-4.88-2.757-6.658s-4.144-2.757-6.66-2.757c-5.179 0-9.39 4.211-9.392 9.39 0 1.81.512 3.236 1.488 4.747l-.999 3.648 3.724-.977zm11.387-5.464c-.34-.17-2.012-.993-2.324-1.106-.313-.114-.541-.17-.768.17-.227.34-.879 1.106-1.078 1.333-.199.227-.398.256-.738.085-.34-.17-1.437-.529-2.737-1.688-1.011-.902-1.693-2.016-1.892-2.357-.199-.34-.021-.524.149-.693.153-.152.34-.398.511-.597.17-.199.227-.34.341-.569.114-.227.057-.426-.028-.597-.085-.17-.768-1.851-1.05-2.532-.275-.662-.553-.573-.768-.584l-.653-.011c-.227 0-.597.085-.909.426-.313.341-1.193 1.165-1.193 2.842 0 1.677 1.222 3.297 1.393 3.524.17.227 2.404 3.672 5.823 5.145.813.35 1.448.56 1.943.717.817.259 1.561.222 2.149.135.656-.097 2.012-.823 2.296-1.619.284-.796.284-1.478.199-1.619-.085-.141-.313-.227-.653-.398z"/></svg>
+            WhatsApp Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/919600545678" target="_blank" class="wa-float">
+  <div class="w-14 h-14 bg-green-500 rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
+    <svg class="w-7 h-7 fill-white" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.511.895 2.994 1.348 4.704 1.349 5.178 0 9.389-4.211 9.392-9.39 0-2.515-.979-4.88-2.757-6.658s-4.144-2.757-6.66-2.757c-5.179 0-9.39 4.211-9.392 9.39 0 1.81.512 3.236 1.488 4.747l-.999 3.648 3.724-.977zm11.387-5.464c-.34-.17-2.012-.993-2.324-1.106-.313-.114-.541-.17-.768.17-.227.34-.879 1.106-1.078 1.333-.199.227-.398.256-.738.085-.34-.17-1.437-.529-2.737-1.688-1.011-.902-1.693-2.016-1.892-2.357-.199-.34-.021-.524.149-.693.153-.152.34-.398.511-.597.17-.199.227-.34.341-.569.114-.227.057-.426-.028-.597-.085-.17-.768-1.851-1.05-2.532-.275-.662-.553-.573-.768-.584l-.653-.011c-.227 0-.597.085-.909.426-.313.341-1.193 1.165-1.193 2.842 0 1.677 1.222 3.297 1.393 3.524.17.227 2.404 3.672 5.823 5.145.813.35 1.448.56 1.943.717.817.259 1.561.222 2.149.135.656-.097 2.012-.823 2.296-1.619.284-.796.284-1.478.199-1.619-.085-.141-.313-.227-.653-.398z"/></svg>
+  </div>
+</a>
+
+<!-- Back to Top -->
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-8 right-8 z-50 w-12 h-12 bg-amber-700 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-amber-800 transition-all">
+  <span class="material-symbols-outlined">keyboard_arrow_up</span>
+</button>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  // ===== FIREBASE =====
+  const firebaseConfig = {
+    apiKey: "AIzaSyCvjdq9MEy08JIqHQAbMOgJcopylmJ4Rlc",
+    authDomain: "bharthi-jewellery.firebaseapp.com",
+    projectId: "bharthi-jewellery",
+    storageBucket: "bharthi-jewellery.firebasestorage.app",
+    messagingSenderId: "411800026042",
+    appId: "1:411800026042:web:b5b958337dc99a54307b83",
+    databaseURL: "https://bharthi-jewellery-default-rtdb.asia-southeast1.firebasedatabase.app"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  firebase.auth().onAuthStateChanged((user) => {
+    const usernameEl = document.getElementById('nav-username');
+    const authBtn = document.getElementById('auth-btn');
+    if (user) {
+      usernameEl.textContent = 'Hi, ' + (user.displayName || '').split(' ')[0];
+      usernameEl.classList.remove('hidden');
+      authBtn.textContent = 'Sign Out';
+    } else {
+      usernameEl.classList.add('hidden');
+      authBtn.textContent = 'Sign In';
+    }
+  });
+
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  function handleAuthClick() {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      firebase.auth().signOut();
+    } else {
+      firebase.auth().signInWithPopup(provider).then(result => {
+        const u = result.user;
+        firebase.database().ref('users/' + u.uid).set({
+          name: u.displayName, email: u.email, photo: u.photoURL,
+          lastLogin: new Date().toString()
+        });
+      }).catch(console.error);
+    }
+  }
+
+  // ===== HERO SLIDER =====
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.slide-dot');
+
+  function goToSlide(idx) {
+    slides[currentSlide].classList.remove('active');
+    dots[currentSlide].className = 'slide-dot w-2 h-1 bg-white/40 rounded-full transition-all';
+    currentSlide = idx;
+    slides[currentSlide].classList.add('active');
+    dots[currentSlide].className = 'slide-dot w-8 h-1 bg-amber-400 rounded-full transition-all';
+  }
+  function nextSlide() { goToSlide((currentSlide + 1) % slides.length); }
+  function prevSlide() { goToSlide((currentSlide - 1 + slides.length) % slides.length); }
+  setInterval(nextSlide, 5500);
+
+  // ===== MOBILE MENU =====
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.add('open');
+    document.getElementById('menu-overlay').classList.remove('hidden');
+  });
+  function closeMobileMenu() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('menu-overlay').classList.add('hidden');
+  }
+  document.getElementById('close-menu').addEventListener('click', closeMobileMenu);
+  document.getElementById('menu-overlay').addEventListener('click', closeMobileMenu);
+
+  // ===== BESTSELLER CAROUSEL =====
+  let bestPos = 0;
+  function scrollBest(dir) {
+    const track = document.getElementById('best-track');
+    const container = document.getElementById('best-container');
+    const cardW = 316;
+    const maxPos = track.scrollWidth - container.offsetWidth;
+    bestPos = Math.max(0, Math.min(bestPos + dir * cardW, maxPos));
+    track.style.transform = `translateX(-${bestPos}px)`;
+  }
+
+  // ===== FILTER PRODUCTS =====
+  function filterProducts(cat, btn) {
+    document.querySelectorAll('.filter-tab').forEach(b => {
+      b.className = 'filter-tab px-5 py-2 rounded-full text-[12px] uppercase tracking-widest font-semibold border border-gray-200 text-gray-500 hover:border-amber-400 hover:text-amber-600 transition-all';
+    });
+    btn.className = 'filter-tab px-5 py-2 rounded-full text-[12px] uppercase tracking-widest font-semibold bg-amber-600 text-white transition-all';
+    document.querySelectorAll('.prod-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    bestPos = 0;
+    document.getElementById('best-track').style.transform = 'translateX(0)';
+  }
+
+  // ===== TESTIMONIAL CAROUSEL =====
+  let testIdx = 0;
+  const testTrack = document.getElementById('test-track');
+  const testDots = document.querySelectorAll('.test-dot');
+
+  function goToTest(idx) {
+    testDots[testIdx].className = 'test-dot w-2 h-1.5 bg-gray-300 rounded-full transition-all';
+    testIdx = idx;
+    const cardW = testTrack.children[0].offsetWidth + 24;
+    testTrack.style.transform = `translateX(-${testIdx * cardW}px)`;
+    testDots[testIdx].className = 'test-dot w-6 h-1.5 bg-amber-500 rounded-full transition-all';
+  }
+  setInterval(() => goToTest((testIdx + 1) % testDots.length), 4500);
+
+  // ===== 360 VIEWER =====
+  let angle360 = 0;
+  let isDragging = false;
+  let lastX = 0;
+  const products360 = {
+    ring: {
+      img: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80',
+      name: 'The Maharani Solitaire Ring',
+      detail: '22K BIS Hallmarked Gold · 4g · Diamond F-SI',
+      price: '₹ 1,42,500'
+    },
+    bangle: {
+      img: 'https://images.unsplash.com/photo-1543294001-f7cd5d7fb516?w=600&q=80',
+      name: 'Eternal Gold Bangle',
+      detail: '22K Gold · 12g · Handcrafted',
+      price: '₹ 88,000'
+    },
+    pendant: {
+      img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&q=80',
+      name: 'Temple Heritage Pendant',
+      detail: 'Antique 22K Gold · Burmese Rubies',
+      price: '₹ 2,84,500'
+    }
+  };
+
+  function change360Product(type) {
+    const p = products360[type];
+    document.getElementById('img360').src = p.img;
+    document.getElementById('product-360-info').innerHTML = `
+      <h3 class="font-display text-2xl">${p.name}</h3>
+      <p class="text-gray-500 text-sm">${p.detail}</p>
+      <p class="text-2xl font-bold" style="color:var(--gold)">${p.price}</p>
+      <button onclick="openQuickView('${p.name}','${p.price}')" class="btn-gold w-full py-3 rounded-full text-[13px] uppercase tracking-wider font-semibold mt-2">Enquire Now</button>
+    `;
+    document.querySelectorAll('[id^=view-]').forEach(b => {
+      b.className = 'px-5 py-2 text-[12px] uppercase tracking-widest border border-gray-200 text-gray-500 rounded-full transition-all hover:border-amber-400 hover:text-amber-600';
+    });
+    document.getElementById('view-' + type).className = 'px-5 py-2 text-[12px] uppercase tracking-widest border-2 border-amber-600 text-amber-700 font-semibold rounded-full transition-all';
+    angle360 = 0;
+    applyAngle360();
+  }
+
+  function rotate360(delta) {
+    angle360 += delta;
+    applyAngle360();
+    document.getElementById('drag-hint').style.opacity = '0';
+  }
+
+  function setFrame360(ang) {
+    angle360 = ang;
+    applyAngle360();
+  }
+
+  function applyAngle360() {
+    const img = document.getElementById('img360');
+    img.style.transform = `perspective(800px) rotateY(${angle360}deg) scaleX(${Math.cos(angle360 * Math.PI / 180) < 0 ? -1 : 1})`;
+  }
+
+  function startDrag360(e) {
+    isDragging = true;
+    lastX = e.clientX;
+    document.getElementById('drag-hint').style.opacity = '0';
+    document.addEventListener('mousemove', onDrag360);
+    document.addEventListener('mouseup', () => { isDragging = false; document.removeEventListener('mousemove', onDrag360); });
+  }
+
+  function onDrag360(e) {
+    if (!isDragging) return;
+    const dx = e.clientX - lastX;
+    lastX = e.clientX;
+    angle360 += dx * 0.5;
+    applyAngle360();
+  }
+
+  function startTouch360(e) {
+    lastX = e.touches[0].clientX;
+    document.addEventListener('touchmove', (ev) => {
+      const dx = ev.touches[0].clientX - lastX;
+      lastX = ev.touches[0].clientX;
+      angle360 += dx * 0.5;
+      applyAngle360();
+    }, { passive: true });
+  }
+
+  // Auto-rotate 360
+  setInterval(() => {
+    if (!isDragging) {
+      angle360 += 0.4;
+      applyAngle360();
+    }
+  }, 30);
+
+  // ===== QUICK VIEW MODAL =====
+  function openQuickView(name, price) {
+    document.getElementById('modal-name').textContent = name;
+    document.getElementById('modal-price').textContent = price;
+    document.getElementById('modal-wa').href = `https://wa.me/919600545678?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(name)}%20(${encodeURIComponent(price)})`;
+    document.getElementById('product-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeQuickView() {
+    document.getElementById('product-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('product-modal').addEventListener('click', closeQuickView);
+
+  function submitEnquiry() {
+    alert('Thank you! Our team will contact you within 24 hours.');
+    closeQuickView();
+  }
+
+  // ===== WISHLIST TOGGLE =====
+  function toggleWish(btn) {
+    btn.classList.toggle('active');
+  }
+
+  // ===== BACK TO TOP =====
+  window.addEventListener('scroll', () => {
+    const backTop = document.getElementById('back-top');
+    if (window.scrollY > 400) {
+      backTop.classList.add('visible');
+    } else {
+      backTop.classList.remove('visible');
+    }
+  });
+
+  // ===== SIMULATE LIVE GOLD RATES =====
+  function updateGoldRate() {
+    const base22 = 6843;
+    const base24 = 7467;
+    const variance = Math.floor(Math.random() * 20) - 10;
+    const r22 = (base22 + variance).toLocaleString('en-IN');
+    const r24 = (base24 + variance).toLocaleString('en-IN');
+    const els22 = document.querySelectorAll('#rate-22k, #rate-badge');
+    els22.forEach(el => { if (el) el.textContent = '₹ ' + r22; });
+    const el24 = document.getElementById('rate-24k');
+    if (el24) el24.textContent = '₹ ' + r24;
+  }
+  setInterval(updateGoldRate, 60000);
+
+  // ===== NAV SHADOW ON SCROLL =====
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    if (window.scrollY > 10) {
+      nav.style.boxShadow = '0 4px 30px rgba(0,0,0,0.12)';
+    } else {
+      nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.06)';
+    }
+  });
+</script>
+</body>
+</html>

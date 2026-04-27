@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Men's Jewellery Collection | Bharthi Jewellers</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "surface-container-lowest": "#ffffff",
+          "on-error-container": "#93000a",
+          "on-surface": "#1c1b1b",
+          "on-tertiary-fixed": "#221b08",
+          "primary-container": "#986d00",
+          "secondary-fixed-dim": "#f6be39",
+          "primary-fixed": "#ffdea6",
+          "error": "#ba1a1a",
+          "secondary-fixed": "#ffdfa0",
+          "outline": "#817563",
+          "on-tertiary-container": "#fffbff",
+          "inverse-surface": "#313030",
+          "on-primary-container": "#fffbff",
+          "background": "#fcf9f8",
+          "surface-dim": "#dcd9d9",
+          "tertiary-fixed-dim": "#d3c5a8",
+          "surface-container": "#f0eded",
+          "secondary": "#795900",
+          "on-tertiary-fixed-variant": "#4f4630",
+          "surface-container-highest": "#e5e2e1",
+          "secondary-container": "#ffc641",
+          "surface-variant": "#e5e2e1",
+          "on-tertiary": "#ffffff",
+          "primary-fixed-dim": "#f7bd48",
+          "on-primary-fixed-variant": "#5d4200",
+          "surface-container-high": "#eae7e7",
+          "surface-tint": "#7b5800",
+          "surface-bright": "#fcf9f8",
+          "surface": "#fcf9f8",
+          "on-background": "#1c1b1b",
+          "on-primary-fixed": "#271900",
+          "on-secondary-fixed-variant": "#5c4300",
+          "on-surface-variant": "#4f4535",
+          "outline-variant": "#d3c4af",
+          "on-primary": "#ffffff",
+          "on-error": "#ffffff",
+          "tertiary-container": "#7f735b",
+          "on-secondary-container": "#715300",
+          "error-container": "#ffdad6",
+          "tertiary-fixed": "#f0e1c3",
+          "inverse-primary": "#f7bd48",
+          "on-secondary-fixed": "#261a00",
+          "surface-container-low": "#f6f3f2",
+          "on-secondary": "#ffffff",
+          "inverse-on-surface": "#f3f0ef",
+          "tertiary": "#655b44",
+          "primary": "#785600"
+        },
+        borderRadius: {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        fontFamily: {
+          "headline": ["Noto Serif"],
+          "body": ["Manrope"],
+          "label": ["Manrope"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  }
+  .glass-header {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .editorial-shadow {
+    box-shadow: 0 10px 40px -10px rgba(120, 86, 0, 0.06);
+  }
+</style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+
+<!-- ===== TOP NAV BAR ===== -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md border-b border-amber-200/20 dark:border-amber-900/30 shadow-sm shadow-amber-900/5">
+  <div class="flex justify-between items-center px-6 md:px-12 h-20 w-full max-w-screen-2xl mx-auto">
+
+    <!-- Logo -->
+    <div class="font-serif text-2xl font-bold text-amber-700 dark:text-amber-500 tracking-tighter">Bharthi Jewellers</div>
+
+    <!-- Desktop Nav Links -->
+    <div class="hidden md:flex items-center gap-8">
+
+      <!-- Collections Dropdown -->
+      <div class="relative group">
+        <button class="text-stone-600 dark:text-stone-400 font-medium uppercase tracking-wider hover:text-amber-600">
+          Collections
+        </button>
+        <div class="absolute left-0 mt-4 w-64 bg-white shadow-lg border border-amber-100
+          opacity-0 invisible group-hover:opacity-100 group-hover:visible
+          transition-all duration-300 z-50">
+          <a href="gold-diamond-rings.html" class="block px-6 py-3 hover:bg-amber-50">Gold &amp; Diamond Rings</a>
+          <a href="chains.html" class="block px-6 py-3 hover:bg-amber-50">Chains &amp; Pendants</a>
+          <a href="earrings-studs.html" class="block px-6 py-3 hover:bg-amber-50">Earrings &amp; Studs</a>
+          <a href="mens-jewellery.html" class="block px-6 py-3 hover:bg-amber-50">Men's Jewellery</a>
+        </div>
+      </div>
+
+      <a class="text-stone-600 dark:text-stone-400 font-medium tracking-wider text-xs uppercase hover:text-amber-600 transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-amber-600 after:scale-x-0 hover:after:scale-x-100 after:transition-transform" href="#">Shop</a>
+      <a class="text-stone-600 dark:text-stone-400 font-medium tracking-wider text-xs uppercase hover:text-amber-600 transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-amber-600 after:scale-x-0 hover:after:scale-x-100 after:transition-transform" href="#">Offer</a>
+      <a class="text-stone-600 dark:text-stone-400 font-medium tracking-wider text-xs uppercase hover:text-amber-600 transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-amber-600 after:scale-x-0 hover:after:scale-x-100 after:transition-transform" href="#">Contact</a>
+    </div>
+
+    <!-- Right Side: CTA + Icons + Mobile Hamburger -->
+    <div class="flex items-center gap-4">
+      <button class="hidden lg:block text-amber-700 dark:text-amber-500 font-bold uppercase text-[10px] tracking-[0.2em] border border-amber-700/20 px-6 py-2 hover:bg-amber-700 hover:text-white transition-all duration-300">Visit Store</button>
+      <span class="hidden md:block material-symbols-outlined text-stone-600 cursor-pointer">search</span>
+      <span class="hidden md:block material-symbols-outlined text-stone-600 cursor-pointer">shopping_bag</span>
+
+      <!-- Mobile Hamburger -->
+      <button id="menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 text-2xl text-stone-700 hover:text-amber-700 transition-colors">
+        ☰
+      </button>
+    </div>
+
+  </div>
+</nav>
+
+<!-- ===== MOBILE MENU ===== -->
+<div id="menu" class="hidden flex-col gap-2 px-6 py-6 bg-white md:hidden shadow-md fixed top-20 left-0 w-full z-40">
+
+  <!-- Collections Toggle -->
+  <button id="collection-btn" class="w-full text-left py-2 font-medium text-gray-800 flex items-center justify-between">
+    Collections
+    <span class="material-symbols-outlined text-lg" id="collection-icon">expand_more</span>
+  </button>
+
+  <div id="collection-menu" class="hidden flex-col pl-4 pb-2">
+    <a href="gold-diamond-rings.html" class="block py-2 text-stone-700 hover:text-amber-600">Gold &amp; Diamond Rings</a>
+    <a href="chains.html" class="block py-2 text-stone-700 hover:text-amber-600">Chains &amp; Pendants</a>
+    <a href="earrings-studs.html" class="block py-2 text-stone-700 hover:text-amber-600">Earrings &amp; Studs</a>
+    <a href="mens-jewellery.html" class="block py-2 text-stone-700 hover:text-amber-600">Men's Jewellery</a>
+  </div>
+
+  <hr class="border-amber-100"/>
+
+  <a href="#" class="block py-2 text-stone-700 hover:text-amber-600 font-medium">Shop</a>
+  <a href="#" class="block py-2 text-stone-700 hover:text-amber-600 font-medium">Offer</a>
+  <a href="#" class="block py-2 text-stone-700 hover:text-amber-600 font-medium">Contact</a>
+</div>
+
+<main class="pt-20">
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="relative px-6 md:px-12 pt-12 pb-24 overflow-hidden">
+    <video autoplay muted loop playsinline
+      class="absolute top-0 left-0 w-full h-full object-cover z-0">
+      <source src="../assets/videos/men-video.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-black/50 z-0"></div>
+    <div class="max-w-screen-2xl mx-auto relative z-10 text-white">
+      <nav class="flex mb-8 text-[10px] uppercase tracking-[0.15em] text-white/80 font-medium">
+        <a href="../index.html" class="hover:text-white">Home</a>
+        <span class="mx-3 opacity-40">/</span>
+        <a href="../index.html" class="hover:text-white">Collections</a>
+        <span class="mx-3 opacity-40">/</span>
+        <span class="text-white">Men's Jewellery</span>
+      </nav>
+      <div class="space-y-6 max-w-2xl">
+        <h1 class="font-headline text-5xl md:text-7xl leading-tight tracking-tight">
+          Men's Jewellery
+        </h1>
+        <p class="max-w-lg leading-relaxed text-lg text-white/90">
+          An intersection of traditional craftsmanship and modern masculinity. Discover curated gold and platinum pieces.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILTER BAR ===== -->
+  <section class="sticky top-20 z-40 bg-white/90 backdrop-blur-md border-b border-outline-variant/10">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-12 py-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2 md:pb-0">
+        <button class="px-6 py-2 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold uppercase tracking-wider whitespace-nowrap">All Items</button>
+        <button class="px-6 py-2 rounded-full border border-outline-variant/30 text-on-surface-variant text-xs font-bold uppercase tracking-wider hover:border-primary transition-colors whitespace-nowrap">Rings</button>
+        <button class="px-6 py-2 rounded-full border border-outline-variant/30 text-on-surface-variant text-xs font-bold uppercase tracking-wider hover:border-primary transition-colors whitespace-nowrap">Chains</button>
+        <button class="px-6 py-2 rounded-full border border-outline-variant/30 text-on-surface-variant text-xs font-bold uppercase tracking-wider hover:border-primary transition-colors whitespace-nowrap">Bracelets</button>
+        <button class="px-6 py-2 rounded-full border border-outline-variant/30 text-on-surface-variant text-xs font-bold uppercase tracking-wider hover:border-primary transition-colors whitespace-nowrap">Kadas</button>
+      </div>
+      <div class="flex items-center gap-6">
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-on-surface-variant cursor-pointer group">
+          <span class="material-symbols-outlined text-lg">tune</span>
+          <span>Filter &amp; Sort</span>
+        </div>
+        <p class="text-xs text-on-surface-variant opacity-60">Showing 24 pieces</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRODUCT GRID ===== -->
+  <section class="px-6 md:px-12 py-24 bg-surface">
+    <div class="max-w-screen-2xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-20">
+
+        <!-- Product 1 -->
+        <div class="group">
+          <div class="aspect-[4/5] mb-8 relative overflow-hidden bg-surface-container-low flex items-center justify-center">
+            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZs2GkWUyrJ0iwunsfskK4tbkIdQ1DzTMFKN3rXyqx_CcQp2GLgw-88O0tgg-I2zYjkmOEKgNFoW3xGVaZhiimL449HcvM_Iz1iVC4yyfZAIIeVIn9jS-J02JEb9T_9FWxnGxWrXMkRke8aRoKyLWsFf_ylFZs2l03_rJoy_Zn_SF45uGmPQ6ANKMYYV6EpXhe6Xcn2Bo-gZCgMj8rmlP3nqNMtshPQxEa52fcube3_9dbzS3N4HUhVjhgj1XvqRy4HOod4s6n7Q" alt="The Heritage Sovereign Chain"/>
+            <div class="absolute top-4 right-4">
+              <span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">favorite</span>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-[10px] uppercase tracking-[0.2em] text-primary font-bold mb-1">Chains</p>
+                <h3 class="font-headline text-xl text-on-surface">The Heritage Sovereign Chain</h3>
+              </div>
+              <p class="font-body text-on-surface font-semibold">₹1,84,500</p>
+            </div>
+            <p class="text-sm text-on-surface-variant line-clamp-2">22K solid gold link chain featuring a hand-polished matte finish and secure vintage clasp.</p>
+            <button class="w-full py-4 text-[10px] uppercase tracking-[0.25em] font-bold text-white bg-gradient-to-r from-primary to-primary-container hover:opacity-90 transition-all">Enquire Now</button>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="group">
+          <div class="aspect-[4/5] mb-8 relative overflow-hidden bg-surface-container-low flex items-center justify-center">
+            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAODkyFC6_W3gEGJXdBgfCb3Wuasrh2FVDzb0FPj5NibSEih7MT13pX7fj2ZM93PDCocR7TXoL4fwggwuEYEd7RokQQi8kqbOEuREY23J4Th8zoDFpZuzzFsqPy5AEZNCqf2AiafnDGULjedpe9NrPJpj7TfRTQbj8TEOenCxemUZ3Dh2ZPP3Wbcbpb5DOseTKL1M-PPOJFrCPKcoq99bVtlzeYtrvtO0HC1YR9Vg5hdn62Pck8eFMp4qrJkfb7Psf2-4EAEhtWGw" alt="Brutalist Signet Ring"/>
+            <div class="absolute top-4 right-4">
+              <span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">favorite</span>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-[10px] uppercase tracking-[0.2em] text-primary font-bold mb-1">Rings</p>
+                <h3 class="font-headline text-xl text-on-surface">Brutalist Signet Ring</h3>
+              </div>
+              <p class="font-body text-on-surface font-semibold">₹82,000</p>
+            </div>
+            <p class="text-sm text-on-surface-variant line-clamp-2">Forged from pure platinum, this architectural piece celebrates raw form and enduring strength.</p>
+            <button class="w-full py-4 text-[10px] uppercase tracking-[0.25em] font-bold text-white bg-gradient-to-r from-primary to-primary-container hover:opacity-90 transition-all">Enquire Now</button>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="group">
+          <div class="aspect-[4/5] mb-8 relative overflow-hidden bg-surface-container-low flex items-center justify-center">
+            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDY_joBXdNHpNt7k5NauqF3PUy57pxks9IkM8cxDJeqh6ILjfMSG2rjmtfrb40SWJZQP2aYHeVyrWRuV5gFGq5dekKU1I2TNk2CcP5-zBc9FaAJniP0c20BNP8MgvGKAJ3wPbiU0FOYBKIQqoj9QcWk57z4jqCN0NzMiFGasa0swc1vhAKMR6GJUzN6IzINhVoPMyWDbQAfDS784lSZE9lpSFvbiGcn4iPbhScqbiI4G6uEaplJbaXqDhAO9kYCNpUyNXYDpxB_ng" alt="The Artisan Warrior Kada"/>
+            <div class="absolute top-4 right-4">
+              <span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">favorite</span>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-[10px] uppercase tracking-[0.2em] text-primary font-bold mb-1">Kadas</p>
+                <h3 class="font-headline text-xl text-on-surface">The Artisan Warrior Kada</h3>
+              </div>
+              <p class="font-body text-on-surface font-semibold">₹2,15,000</p>
+            </div>
+            <p class="text-sm text-on-surface-variant line-clamp-2">Inspired by ancestral lineage, featuring high-relief engraving and a comfortable inner profile.</p>
+            <button class="w-full py-4 text-[10px] uppercase tracking-[0.25em] font-bold text-white bg-gradient-to-r from-primary to-primary-container hover:opacity-90 transition-all">Enquire Now</button>
+          </div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="group">
+          <div class="aspect-[4/5] mb-8 relative overflow-hidden bg-surface-container-low flex items-center justify-center">
+            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT-Vf2Wu_74WK_mlN4z0mSDpa7EBSLbkiueHura8km-SFAm4z4QI5nNC9WNEn-_znZJnYBLxDD3Wk3TmwEJvpBnlPZAvCKt0PvMS2zJzWCwa1o33hA22jKsaZeqK2g92c5NIYD-1yiudoTIz3skyieYXujCkU3VNde0IaAEXANhryryQlAnhl472A6wA3RyWjrNW_kuTTP46SGZeenEYKvEhyDu53qbFjBIjrAsweN46UmmqQY_2aHk6QbujJ-kJ4ZBPMAVOA7Tg" alt="Minimalist Gold Cuff"/>
+            <div class="absolute top-4 right-4">
+              <span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">favorite</span>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-[10px] uppercase tracking-[0.2em] text-primary font-bold mb-1">Bracelets</p>
+                <h3 class="font-headline text-xl text-on-surface">Minimalist Gold Cuff</h3>
+              </div>
+              <p class="font-body text-on-surface font-semibold">₹1,12,000</p>
+            </div>
+            <p class="text-sm text-on-surface-variant line-clamp-2">A sleek, open-ended cuff in 18K gold. Perfect for daily wear and subtle luxury statements.</p>
+            <button class="w-full py-4 text-[10px] uppercase tracking-[0.25em] font-bold text-white bg-gradient-to-r from-primary to-primary-container hover:opacity-90 transition-all">Enquire Now</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EDITORIAL SECTION ===== -->
+  <section class="bg-surface-container-low py-32 px-6 md:px-12 overflow-hidden">
+    <div class="max-w-screen-2xl mx-auto flex flex-col lg:flex-row items-center gap-20">
+      <div class="w-full lg:w-1/2 relative">
+        <div class="aspect-square w-4/5 ml-auto overflow-hidden">
+          <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB47EXQyqTEO-acrS1hAY5pmEu2IQIKq3Pf5lzIPoWXo0w82VrV9UkrDNPSVGOKT9LGfGHdmD0RI-IB1A01vNsVs9BIDMKILyYgkB3GjyT5PyV0LNs5wG500oXgzrbuxcyBDFLYKyCt0Tiob2gg4N6oStrzFN0oxiEHeNczp7ud_ztokzvvuI1Pf6Y2dH_ouI6sEDIAFM5KJtytHsGvM0_m8QmaOs0-wEx5tLZxCdYqmFB3Kzl4HJNdZ8t3rt0C9p1AGulz2_2_kQ" alt="Craftsman at work"/>
+        </div>
+        <div class="absolute bottom-12 left-0 w-2/3 aspect-[4/3] overflow-hidden border-8 border-surface-container-low">
+          <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWqmHy9ScWl9wIH03Cr-Bd2HOGYLg-BJmvau3btHifBHPpTlwepfWcH0fNO_wRWUft8H4shQkxUIZ9SIoavJxcQJkJh1IydlAg6XAdwsqm8lqeC16dSXxFZYL3NNqHDJg5XF0MADOjlOK5GNpM5zMmq7W1yDu-HzX_f85V-kRGOu8GPigAVN-2i-k-BgfVyLNXt9c5YPsLW-8rdQqGy60OlPB-nXxccVrgINWnodd21I-832YxX3OjqBs09HTxiwaCYMaCowVupA" alt="Jewelry tools close-up"/>
+        </div>
+      </div>
+      <div class="w-full lg:w-1/2 space-y-8">
+        <h2 class="font-headline text-4xl md:text-5xl text-on-surface leading-tight">The Art of Bespoke Masculinity</h2>
+        <p class="font-body text-on-surface-variant text-lg leading-relaxed">
+          At Bharthi Jewellers, we understand that jewellery is more than an accessory for the modern man—it's a signature. Our master artisans combine age-old techniques with contemporary ergonomics to ensure every piece feels as good as it looks.
+        </p>
+        <div class="flex flex-col gap-6">
+          <div class="flex items-start gap-4">
+            <span class="material-symbols-outlined text-primary">verified</span>
+            <div>
+              <h4 class="font-bold text-on-surface text-sm uppercase tracking-widest mb-1">Ethical Sourcing</h4>
+              <p class="text-sm text-on-surface-variant">Conflict-free gold and responsibly mined platinum.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <span class="material-symbols-outlined text-primary">brush</span>
+            <div>
+              <h4 class="font-bold text-on-surface text-sm uppercase tracking-widest mb-1">Custom Design</h4>
+              <p class="text-sm text-on-surface-variant">Work with our designers to create a piece unique to your story.</p>
+            </div>
+          </div>
+        </div>
+        <button class="mt-8 text-primary font-bold uppercase text-[10px] tracking-[0.2em] border-b-2 border-primary pb-2 hover:opacity-70 transition-opacity">Learn about our Atelier</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="bg-zinc-950 dark:bg-black text-white py-16 px-6 md:px-12">
+  <div class="max-w-screen-2xl mx-auto border-t border-zinc-800 pt-16">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+      <div class="space-y-6">
+        <div class="font-serif text-xl text-amber-500 uppercase tracking-[0.2em]">Bharthi Jewellers</div>
+        <p class="font-headline italic text-zinc-400 text-lg">"Crafting legacies that endure generations."</p>
+      </div>
+      <div class="space-y-6">
+        <h5 class="text-[10px] uppercase tracking-[0.2em] text-amber-500 font-bold">The Atelier</h5>
+        <ul class="space-y-4 text-zinc-500 font-body text-sm tracking-tight">
+          <li><a class="hover:text-amber-400 transition-colors" href="#">Our Story</a></li>
+          <li><a class="hover:text-amber-400 transition-colors" href="#">Craftsmanship</a></li>
+          <li><a class="hover:text-amber-400 transition-colors" href="#">Heritage Collection</a></li>
+          <li><a class="hover:text-amber-400 transition-colors" href="#">Journal</a></li>
+        </ul>
+      </div>
+      <div class="space-y-6">
+        <h5 class="text-[10px] uppercase tracking-[0.2em] text-amber-500 font-bold">Services</h5>
+        <ul class="space-y-4 text-zinc-500 font-body text-sm tracking-tight">
+          <li><a class="hover:text-amber-400 transition-colors" href="#">Care Guide</a></li>
+          <li><a class="hover:text-amber-400 transition-colors" href="#">Bespoke Service</a></li>
+          <li><a class="hover:text-amber-400 transition-colors" href="#">Valuations</a></li>
+          <li><a class="hover:text-amber-400 transition-colors" href="#">Visit Store</a></li>
+        </ul>
+      </div>
+      <div class="space-y-6">
+        <h5 class="text-[10px] uppercase tracking-[0.2em] text-amber-500 font-bold">Connect</h5>
+        <ul class="space-y-4 text-zinc-500 font-body text-sm tracking-tight">
+          <li><a class="hover:text-amber-400 transition-colors" href="#">Contact Us</a></li>
+          <li><a class="hover:text-amber-400 transition-colors" href="#">Instagram</a></li>
+          <li><a class="hover:text-amber-400 transition-colors" href="#">Pinterest</a></li>
+          <li class="pt-4">
+            <div class="flex border-b border-zinc-700 pb-2">
+              <input class="bg-transparent border-none focus:ring-0 text-xs w-full placeholder:text-zinc-700 uppercase tracking-widest" placeholder="Newsletter" type="email"/>
+              <span class="material-symbols-outlined text-amber-500 cursor-pointer">arrow_forward</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-24 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-[0.15em] text-zinc-600 gap-6">
+      <p>© 2024 Bharthi Jewellers. Crafted with Heritage.</p>
+      <div class="flex gap-8">
+        <a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+        <a class="hover:text-white transition-colors" href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const menuBtn = document.getElementById("menu-btn");
+  const menu = document.getElementById("menu");
+
+  menuBtn.addEventListener("click", () => {
+    menu.classList.toggle("hidden");
+    menu.classList.toggle("flex");
+  });
+
+  // Collections sub-menu toggle
+  const colBtn = document.getElementById("collection-btn");
+  const colMenu = document.getElementById("collection-menu");
+  const colIcon = document.getElementById("collection-icon");
+
+  colBtn.addEventListener("click", () => {
+    const isHidden = colMenu.classList.toggle("hidden");
+    colMenu.classList.toggle("flex", !isHidden);
+    colIcon.textContent = isHidden ? "expand_more" : "expand_less";
+  });
+</script>
+</body>
+</html>
